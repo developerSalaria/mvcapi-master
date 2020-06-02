@@ -1,0 +1,28 @@
+﻿
+@{
+    ViewBag.Title = "UploadFile";
+}
+
+<div class="kt-portlet kt-portlet--mobile pea-page" style="        box-shadow: 5px 5px 15px 5px rgba(0,0,0,0.35);">
+    <div class="kt-portlet__head" style="background: #F35869 !important;min-height:42px;border-radius:4px;">
+        <div class="kt-portlet__head-label">
+            <span class="kt-portlet__head-icon">
+                <i class="fas fa-chart-bar text-white"></i>
+            </span>
+            <h3 class="kt-portlet__head-title text-white">
+                Upload Excel
+            </h3>
+        </div>
+    </div>
+    <div class="kt-portlet__body">
+        <form method="post" action="@Url.Action("Upload","Reports")" enctype="multipart/form-data">
+            <input type="file" id="excelFile" name="excelFile" />
+
+            <button class="btn btn-brand btn-elevate kt-login__btn-primary" type="submit">Upload Excel</button>
+            <span style="color:forestgreen;">@ViewBag.Message</span>
+        </form>
+
+    </div>
+</div>
+
+

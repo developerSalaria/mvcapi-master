@@ -1,0 +1,228 @@
+﻿@model TPA.Models.Claims.ClaimsModel
+
+@{
+    ViewBag.Title = "Reports";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<asp:content contentplaceholderid="head" runat="server">
+    @*for attachment*@
+    @Styles.Render("~/Content/Attachments/jquery.magnify.css")
+    @*for attachment end*@
+    @Styles.Render("~/Scripts/Datatable/Datatable/datatables.min.css")
+    <style>
+        #basicInformationModal .modal-dialog {
+            width: 90%;
+        }
+
+        a.kt-grid-nav__item {
+            cursor: pointer;
+        }
+
+        table.table-bordered.dataTable th:last-child, table.table-bordered.dataTable th:last-child, table.table-bordered.dataTable td:last-child, table.table-bordered.dataTable td:last-child {
+            border-left-width: 1px;
+        }
+
+        .attachment-filter {
+            margin: 10px;
+            border-radius: .125rem;
+            border: 1px solid #CCC;
+            box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
+            transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+        }
+
+        .gallery {
+            -webkit-column-count: 3;
+            -moz-column-count: 3;
+            column-count: 3;
+            -webkit-column-width: 33%;
+            -moz-column-width: 33%;
+            column-width: 33%;
+        }
+
+        .gallery .pics {
+                -webkit-transition: all 350ms ease;
+                transition: all 350ms ease;
+            }
+
+        .gallery .animation {
+                -webkit-transform: scale(1);
+                -ms-transform: scale(1);
+                transform: scale(1);
+            }
+
+        @@media (max-width: 450px) {
+            .gallery {
+                -webkit-column-count: 1;
+                -moz-column-count: 1;
+                column-count: 1;
+                -webkit-column-width: 100%;
+                -moz-column-width: 100%;
+                column-width: 100%;
+            }
+        }
+
+        @@media (max-width: 400px) {
+            .btn.filter {
+                padding-left: 1.1rem;
+                padding-right: 1.1rem;
+            }
+        }
+
+        .modal-full.modal-dialog {
+            width: 99% !important;
+            max-width: 99%;
+        }
+
+        .cursor {
+            cursor: pointer;
+        }
+
+        .modal {
+            overflow: auto !important;
+        }
+    </style>
+</asp:content>
+
+<div>
+    <br />
+    <h2>Loss Ratio Report</h2>
+    <div class="kt-separator kt-separator--md kt-separator--dashed"></div>
+    <br />
+    <div class="kt-portlet__body" id="SearchCriteria">
+        <!--begin: Search Form -->
+        <div class="kt-form kt-form--fit kt-margin-b-20" id="advanceSearchElements">
+            <div class="row kt-margin-b-20 ">
+                <div class="col-lg-4 kt-margin-b-10-tablet-and-mobile">
+                    <label>Select Provider:</label>
+                    <input type="text" name="searchPersonCode" id="txt1" value="" class="form-control kt-input" data-col-index="0">
+                </div>
+                <div class="col-lg-4 kt-margin-b-10-tablet-and-mobile">
+                    <label>Select Contractor:</label>
+                    <input type="text" name="search" id="txtCompany2" class="form-control kt-input" placeholder="" data-col-index="1">
+                </div>
+                <div class="col-lg-4 kt-margin-b-10-tablet-and-mobile">
+                    <label>Company Name:</label>
+                    <input type="text" name="search" id="txtCompany1" class="form-control kt-input" placeholder="" data-col-index="1">
+                </div>
+                <div class="col-lg-4 kt-margin-b-10-tablet-and-mobile">
+                    <label>Employee Name:</label>
+                    <input type="text" name="search" id="txtCompany2" class="form-control kt-input" placeholder="" data-col-index="1">
+                </div>
+                <div class="col-lg-4 kt-margin-b-10-tablet-and-mobile">
+                    <label>From Date:</label>
+                    <div class="input-group date oraMenuDate">
+                        <input type="text" class="form-control" id="txt2" name="search" placeholder="E.g:01-01-2019" data-col-index="1">
+                        <div class="input-group-append">
+                            <span class="input-group-text">
+                                <i class="la la-calendar"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 kt-margin-b-10-tablet-and-mobile">
+                    <label>To Date:</label>
+                    <div class="input-group date oraMenuDate">
+                        <input type="text" class="form-control" id="txt2" name="search" placeholder="E.g:01-01-2019" data-col-index="1">
+                        <div class="input-group-append">
+                            <span class="input-group-text">
+                                <i class="la la-calendar"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 kt-margin-b-10-tablet-and-mobile">
+                    <label>Employee Insurance Id:</label>
+                    <input type="text" name="search" id="txtCompany5" class="form-control kt-input" placeholder="" data-col-index="1">
+                </div>
+                <div class="col-lg-4 kt-margin-b-10-tablet-and-mobile">
+                    <label>Status:</label>
+                    <input type="text" name="search" id="txtCompany6" class="form-control kt-input" placeholder="" data-col-index="1">
+                </div>
+                <div class="col-lg-4 kt-margin-b-10-tablet-and-mobile">
+                    <label>
+                        Visit Type:
+                    </label>
+                    <input type="text" name="search" id="txtCompany7" class="form-control kt-input" placeholder="" data-col-index="1">
+                </div>
+                <div class="col-lg-4 kt-margin-b-10-tablet-and-mobile">
+                    <label>Claim Id:</label>
+                    <input type="text" name="search" id="txtCompany8" class="form-control kt-input" placeholder="" data-col-index="1">
+                </div>
+                <div class="col-lg-4 kt-margin-b-10-tablet-and-mobile">
+                    <label>Payment status:</label>
+                    <input type="text" name="search" id="txtCompany8" class="form-control kt-input" placeholder="" data-col-index="1">
+                </div>
+            </div>
+            <div class="kt-separator kt-separator--md kt-separator--dashed"></div>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <button class="btn btn-primary btn-brand--icon" id="kt_search">
+                        <span>
+                            <i class="la la-search"></i>
+                            <span>Export XLS</span>
+                        </span>
+                    </button>
+                    &nbsp;&nbsp;
+                    <button class="btn btn-secondary btn-secondary--icon" onclick="ClearSearch()" id="kt_reset">
+                        <span>
+                            <i class="la la-close"></i>
+                            <span>Reset</span>
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!--begin: Datatable -->
+
+    <br />
+
+   
+    <!--end: Datatable -->
+
+@*<p>
+        @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>*@
+@section scripts
+    {
+
+
+
+    <script src="~/Scripts/Common/Common.js" type="text/javascript"></script>
+    @Scripts.Render("~/Scripts/Datatable/Datatable/datatables.min.js")
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+           
+
+        });
+        $("#advance-search-btn").click(function () {
+            $("#SearchCriteria").toggle("slow", function () {
+                // Animation complete.
+            });
+        });
+
+       
+    </script>
+
+    <script type="text/javascript">
+        var model;
+         @*var baseurl='@System.Configuration.ConfigurationManager.AppSettings["BaseAddress"].ToString()';*@
+         var serverUri = '@Url.Action("GetClaims", "Claims")';
+
+
+    $(document).ready(function () {
+       
+        $("#kt_search").click(function () {
+                searchPersonByFilters();
+        });
+
+    });
+
+
+    </script>
+}

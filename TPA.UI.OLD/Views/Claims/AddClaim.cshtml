@@ -1,0 +1,312 @@
+﻿@using TPA.Helper;
+<div class="kt-portlet kt-portlet--mobile pea-page">
+    <div class="kt-portlet mt-3">
+        <div class="kt-portlet__head">
+            <div class="kt-portlet__head-label">
+                <span class="kt-portlet__head-icon">
+                    <i class="flaticon2-graph"></i>
+                </span>
+                <h3 class="kt-portlet__head-title">
+                    Add Claim
+                </h3>
+            </div>
+        </div>
+        <div class="kt-portlet__body">
+            <div class="row">
+                <div class="col-lg-11">
+                    <div class="row kt-margin-b-20">
+                        <div class="col-lg-6 kt-margin-b-10">
+                            <label>Provider :</label>
+                            <input type="text" class="form-control kt-input" />
+
+                        </div>
+                        <div class="col-lg-6">
+                            <label>Status :</label>
+                            <input type="text" class="form-control kt-input" />
+
+                        </div>
+                        <div class="col-lg-8 kt-margin-b-10">
+                            <label>Insurance ID :</label>
+                            <input type="text" class="form-control kt-input" />
+                        </div>
+                        <div class="col-lg-3 align-items-end d-flex kt-margin-b-10">
+                            <button type="button" class="btn btn-primary" id="searchBtn">Search</button>
+                        </div>
+                        <div class="col-lg-12 d-none kt-margin-b-10" id="insuranceDetails">
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-lg-9 col-lg-9">
+                                        <div class="row kt-margin-b-20">
+                                            <div class="col-lg-6">
+                                                <p class="font-weight-normal">Gender :</p>
+                                            </div>
+                                            <div class="col-lg-6">
+
+                                                <span>Male</span>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <p class="font-weight-normal">DOB :</p>
+
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <span>01 Jan, 2000</span>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <p class="font-weight-normal">Employee Type :</p>
+
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <span>Regular</span>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <p class="font-weight-normal">Contact No. :</p>
+
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <span>789654321</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Claim Id</th>
+                                            <th scope="col">Date</th>
+                                            <th scope="col">View Details</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td scope="row">
+                                                14
+                                            </td>
+                                            <td scope="row">
+                                                @DateTime.Now.ToString()
+                                            </td>
+                                            <td scope="row">
+                                                <button class="btn btn-link claim-details-btn">Details</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td scope="row">
+                                                16
+                                            </td>
+                                            <td scope="row">
+                                                @DateTime.Now.ToString()
+                                            </td>
+                                            <td scope="row">
+                                                <button class="btn btn-link claim-details-btn">Details</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 kt-margin-b-10">
+                            <label>Visit Type :</label>
+                            @Html.DropDownList("VisitType", CommonHelper.GetVisitTypes(), new { @class = "form-control kt-input" })
+                        </div>
+                        <div class="col-lg-4 kt-margin-b-10">
+                            <label>Visit Date :</label>
+                            <div class="input-group date" data-provide="datepicker">
+                                <input type="text" class="form-control kt-input">
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><i class="flaticon-calendar"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 kt-margin-b-10">
+                            <label>Speciality Of Doctor :</label>
+                            @Html.DropDownList("VisitType", CommonHelper.GetVisitTypes(), new { @class = "form-control kt-select" })
+                        </div>
+                        <div class="col-lg-8 kt-margin-b-10">
+                            <label>Symptoms :</label>
+                            @Html.TextBox("Symptoms", "", new { @class = "form-control kt-select", id = "symptomsCode" })
+                        </div>
+                        <div class="col-lg-3 align-items-end d-flex kt-margin-b-10">
+                            <button type="button" class="btn btn-success" id="addSymptom">Add To List</button>
+                        </div>
+                        <div class="col-lg-12 d-none" id="symptomsGrid">
+                            <div class="col-lg-12">
+                                <h4>Symptoms</h4>
+                            </div>
+                            <div class="col-lg-12 kt-margin-t-10 kt-margin-b-20 list-view">
+                                @* header row *@
+                                <div class="row header-row">
+                                    <div class="col-lg-3 list-column"><p class="font-weight-normal">Code</p></div>
+                                    <div class="col-lg-8 list-column"><p class="font-weight-normal">Sympton Description</p></div>
+                                    <div class="col-lg-1 list-column"></div>
+                                </div>
+
+                                @* children rows *@
+
+                            </div>
+                        </div>
+
+                        <div class="col-lg-8 kt-margin-b-10">
+                            <label>Services :</label>
+                            @Html.TextBox("Services", "", new { @class = "form-control kt-select", id = "serviceCode" })
+                        </div>
+                        <div class="col-lg-3 align-items-end d-flex kt-margin-b-10">
+                            <button type="button" class="btn btn-success" id="addService">Add To List</button>
+                        </div>
+                        <div class="col-lg-12 d-none" id="servicesGrid">
+                            <div class="col-lg-12">
+                                <h4>Services</h4>
+                            </div>
+                            <div class="col-lg-12 kt-margin-t-10 kt-margin-b-20 list-view">
+                                @* header row *@
+                                <div class="row header-row">
+                                    <div class="col-lg-2 list-column"><p class="font-weight-normal">Code</p></div>
+                                    <div class="col-lg-1 list-column"><p class="font-weight-normal">Service Name</p></div>
+                                    <div class="col-lg-2 list-column"><p class="font-weight-normal">Service Price</p></div>
+                                    <div class="col-lg-2 list-column"><p class="font-weight-normal">Rule</p></div>
+                                    <div class="col-lg-2 list-column"><p class="font-weight-normal">Co-share Amount</p></div>
+                                    <div class="col-lg-1 list-column"><p class="font-weight-normal">Insured</p></div>
+                                    <div class="col-lg-1 list-column"><p class="font-weight-normal">Status</p></div>
+                                    <div class="col-lg-1 list-column list-column--icon"></div>
+                                </div>
+
+                                <div class="row row--total">
+                                    <div class="col-lg-2 list-column"><p class="font-weight-normal">Total Service</p></div>
+                                    <div class="col-lg-1 list-column"></div>
+                                    <div class="col-lg-2 list-column"><p class="font-weight-normal">Total Coshare</p></div>
+                                    <div class="col-lg-2 list-column"></div>
+                                    <div class="col-lg-2 list-column"><p class="font-weight-normal">Total Insured</p></div>
+                                    <div class="col-lg-1 list-column"></div>
+                                    <div class="col-lg-1 list-column"></div>
+                                    <div class="col-lg-1 list-column list-column--icon">
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-lg-12 d-flex justify-content-end">
+                                <button class="btn btn-info">Calculate</button>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 kt-margin-b-10">
+                            <label>Provider Notes :</label>
+                            @Html.TextArea("ProviderNotes", "", new { @class = "form-control kt-select" })
+                        </div>
+                        <div class="col-lg-6 kt-margin-b-10">
+                            <label>Auditor Notes :</label>
+                            @Html.TextArea("Services", "", new { @class = "form-control kt-select" })
+                        </div>
+                        <div class="col-m-3 kt-margin-r-20 kt-margin-l-10 kt-margin-t-20">
+                            <button class="btn btn-success">Add Claim</button>
+                        </div>
+                        <div class="col-m-3  kt-margin-r-20 kt-margin-t-20">
+                            <button class="btn btn-secondary">Reset</button>
+                        </div>
+                        <div class="col-m-3 kt-margin-t-20">
+                            <button class="btn btn-danger">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="viewClaimsModal" class="modal animated slideInRight in slideInLeft out" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    Claim Details
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body" id="viewClaimsModalBody">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-clean btn-bold btn-upper btn-font-sm" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#searchBtn").click(function () {
+            $("#insuranceDetails").removeClass("d-none");
+        });
+
+        $("#insuranceDetails").on("click", ".claim-details-btn", function () {
+            $.ajax({
+                url: "@Url.Action("ViewClaim", "Claims")",
+                success: function (html) {
+                    $("#viewClaimsModalBody").html(html);
+                    $("#viewClaimsModal").modal("show");
+                }
+            })
+        });
+
+        $("#addSymptom").click(function () {
+            $("#symptomsGrid").removeClass("d-none");
+        })
+
+        $("#addService").click(function () {
+            var serviceCode = $("#serviceCode").val();
+            if (serviceCode) {
+                var row = `<div class="row">
+                                    <div class="col-lg-2 list-column">${serviceCode}</div>
+                                    <div class="col-lg-1 list-column"></div>
+                                    <div class="col-lg-2 list-column"></div>
+                                    <div class="col-lg-2 list-column"></div>
+                                    <div class="col-lg-2 list-column"></div>
+                                    <div class="col-lg-1 list-column"></div>
+                                    <div class="col-lg-1 list-column"></div>
+                                    <div class="col-lg-1 list-column list-column--icon">
+                                        <i class="flaticon-delete delete-service" style="color: red;"></i>
+                                    </div>
+                                </div>`
+                var totalRow = $("#servicesGrid").find(".row--total");
+                $(row).insertBefore(totalRow);
+            }
+            $("#servicesGrid").removeClass("d-none");
+        })
+
+        $("#servicesGrid").on("click", ".delete-service", function () {
+            var confirmation = confirm("Are you sure you want to delete the service?");
+            if (confirmation) {
+                $(this).closest(".row").remove();
+
+                if ($("#servicesGrid").find(".row").length == 2) {
+                    $("#servicesGrid").addClass("d-none");
+                }
+            }
+        })
+
+        $("#addSymptom").click(function () {
+            var symptomsCode = $("#symptomsCode").val();
+            if (symptomsCode) {
+                var row = `<div class="row">
+                                    <div class="col-lg-3 list-column">${symptomsCode}</div>
+                                    <div class="col-lg-8 list-column">${symptomsCode} Description</div>
+                                    <div class="col-lg-1 list-column list-column--icon">
+                                        <i class="flaticon-delete delete-symptom" style="color: red;"></i>
+                                    </div>
+                                </div>`
+                var view = $("#symptomsGrid").find(".list-view");
+                $(view).append(row);
+            }
+            $("#symptomsGrid").removeClass("d-none");
+        })
+
+        $("#symptomsGrid").on("click", ".delete-symptom", function () {
+            var confirmation = confirm("Are you sure you want to delete the symptom?");
+            if (confirmation) {
+                $(this).closest(".row").remove();
+
+                if ($("#symptomsGrid").find(".row").length == 1) {
+                    $("#symptomsGrid").addClass("d-none");
+                }
+            }
+        })
+    })
+</script>

@@ -1,0 +1,200 @@
+﻿@using Newtonsoft.Json;
+@using TPA.Common.Core.Model;
+@model Provider
+@{
+    ViewBag.Title = "ProviderReport";
+    Layout = null;
+}
+
+<div class="kt-portlet kt-portlet--mobile pea-page">
+    <div class="kt-portlet__head" style="background: #F35869 !important;min-height:42px;border-radius:4px;">
+        <div class="kt-portlet__head-label">
+            <span class="kt-portlet__head-icon">
+                <i class="fas fa-user text-white"></i>
+            </span>
+            <h3 class="kt-portlet__head-title text-white">
+                @ViewBag.headerTitle
+            </h3>
+        </div>
+    </div>
+    <div class="kt-portlet__body">
+        @Html.HiddenFor(m => m.ID, new { @class = "form-control kt-input", id = "txtProviderId" })
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row kt-margin-b-20">
+                    <div class="col-lg-4 kt-margin-b-10">
+                        <label style="font-weight:700">Provider Name :</label>
+                        <div class="input-group">
+                            @Html.TextBoxFor(m => m.Name, new { @class = "form-control kt-input", id = "txtProviderName" })
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-user text-dark"></i></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 kt-margin-b-10">
+                        <label style="font-weight:700">Contact No :</label>
+                        <div class="input-group">
+                            @Html.TextBoxFor(m => m.TelephoneNo, new { @class = "form-control kt-input", id = "txtTelephoneNo" })
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-phone text-dark"></i></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 kt-margin-b-10">
+                        <label style="font-weight:700">Email ID :</label>
+                        <div class="input-group">
+                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control kt-input", id = "txtEmailId" })
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-envelope  text-dark"></i></span>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="col-lg-4 kt-margin-b-10">
+                        <label class="font-weight-bold">Country :</label>
+                        @Html.DropDownListFor(m => m.CountryID, Dropdowns.Country(), new { @class = "form-control kt-input dropDownSelect2", id = "ddlCountryID" })
+                    </div>
+
+                    <div class="col-lg-4 kt-margin-b-10">
+                        <label class="font-weight-bold">State :</label>
+                        @Html.DropDownListFor(m => m.CountryID, Dropdowns.Country(), new { @class = "form-control kt-input dropDownSelect2", id = "ddlStateID" })
+                    </div>
+
+                    <div class="col-lg-4 kt-margin-b-10">
+                        <label class="font-weight-bold">City :</label>
+                        @Html.DropDownListFor(m => m.CountryID, Dropdowns.Country(), new { @class = "form-control kt-input dropDownSelect2", id = "ddlCityID" })
+                    </div>
+
+                    <div class="col-lg-4 kt-margin-b-10">
+                        <label style="font-weight:700">Contract No. :</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control kt-input" id="txtContractNumber">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-envelope  text-dark"></i></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 kt-margin-b-10">
+                        <label style="font-weight:700">Contract Start Date :</label>
+                        <div class="input-group date" id="ToDateDateHolder">
+                            <input type="text" class="form-control kt-input" id="txtContractStartDate" />
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="flaticon-calendar text-dark"></i></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 kt-margin-b-10">
+                        <label style="font-weight:700">Contract Expiry Date :</label>
+                        <div class="input-group date" id="ToDateDateHolder">
+                            <input type="text" class="form-control kt-input" id="txtContractExpiryDate" />
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="flaticon-calendar text-dark"></i></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-10 kt-margin-b-10">
+                        <label style="font-weight:700">Address :</label>
+                        @Html.TextBoxFor(m => m.Address, new { @class = "form-control kt-input", id = "txtAddress" })
+                    </div>
+                    <div class="col-lg-2 kt-margin-b-10">
+                        <div class="custom-control custom-checkbox mt-5">
+                            <input type="checkbox" class="custom-control-input" id="checkBoxActiveStatus" name="example1">
+                            <label style="font-weight:700" class="custom-control-label" for="checkBoxActiveStatus">Active Status</label>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12 kt-margin-b-10">
+                        <label style="font-weight:700">Payment Details :</label>
+                        <textarea type="text" class="form-control kt-input" id="txtPaymentDetails"></textarea>
+                    </div>
+                    <div class="col-m-3 kt-margin-t-20">
+                        @if (Model.ID == 0)
+                        {
+                            <button class="text-white btn  btn-primary ml-3" id="btnSaveProvider"><i class="fas fa-save"></i>Save</button>
+                        }
+                        <button class="btn text-white ml-3" data-dismiss="modal" aria-label="Close" style="background-color:red;" ><i class="fas fa-window-close"></i>Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#txtContractStartDate").datepicker();
+        $("#txtContractExpiryDate").datepicker();
+    });
+     //use for save  provider
+    var provider = {
+                         id : $("#txtProviderId").val(),
+                            Name : $("#txtProviderName").val(),
+                            TelephoneNo : $("#txtTelephoneNo").val(),
+                            Email : $("#txtTelephoneNo").val(),
+                            CountryID : $("#ddlCountryID").val(),
+                            StateId : $("#ddlStateID").val(),
+                            CityId : $("#ddlCityID").val(),
+                            ContractNumber : $("#txtContractNumber").val(),
+                            ContractStartDate : $("#txtContractStartDate").val(),
+                            ContractExpiryDate : $("#txtContractExpiryDate").val(),
+                            Address : $("#txtAddress").val(),
+                            IsStatusActive :  $("#checkBoxActiveStatus").val(),
+                            PaymentDetails : $("#txtPaymentDetails").val(),
+    }
+            $("#btnSaveProvider").on("click", function () {
+                $.ajax({
+                    type: 'Post',
+                    url: '@Url.Action("EditProvider", "Provider")',
+                    data: provider = {
+                         id : $("#txtProviderId").val(),
+                            name : $("#txtProviderName").val(),
+                            TelephoneNo : $("#txtTelephoneNo").val(),
+                            Email : $("#txtTelephoneNo").val(),
+                            CountryID : $("#ddlCountryID").val(),
+                            StateId : $("#ddlStateID").val(),
+                            CityId : $("#ddlCityID").val(),
+                            ContractNumber : $("#txtContractNumber").val(),
+                            ContractStartDate : $("#txtContractStartDate").val(),
+                            ContractExpiryDate : $("#txtContractExpiryDate").val(),
+                            Address : $("#txtAddress").val(),
+                            IsStatusActive :  $("#checkBoxActiveStatus").val(),
+                        PaymentDetails: $("#txtPaymentDetails").val(),
+                        Email: $("#txtEmailId").val(),
+    },
+                    success: function (data) {
+                        clearAddUpdateProvoderFields();
+                       swal.fire("Provider Added Successfully!");
+                    }
+                })
+            });
+
+
+    function clearAddUpdateProvoderFields() {
+          $("#txtProviderId").val("");
+                        $("#txtProviderName").val("");
+                        $("#txtTelephoneNo").val("");
+                        $("#txtTelephoneNo").val("");
+                        $("#ddlCountryID").val("");
+                        $("#ddlStateID").val();
+                        $("#ddlCityID").val("");
+                        $("#txtContractNumber").val("");
+                        $("#txtContractStartDate").val("");
+                        $("#txtContractExpiryDate").val("");
+                        $("#txtAddress").val("");
+                        $("#checkBoxActiveStatus").val("");
+                        $("#txtPaymentDetails").val("");
+                        $("#txtEmailId").val("");
+    }
+</script>
+
+
+
+
+

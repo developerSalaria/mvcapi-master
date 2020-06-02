@@ -1,0 +1,283 @@
+﻿@using TPA.Presentation
+@using TPA.Common.Core.Resources
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>TPA | Log in</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Asap+Condensed:500">
+
+    <link href="~/Content/ladda-themeless.min.css" rel="stylesheet" />
+    <link href="~/Content/prism.css" rel="stylesheet" />
+    @Styles.Render("~/Content/login")
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/common")
+
+</head>
+<body class="kt-login__page kt-page--loading-enabled kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-header--fixed kt-header--minimize-topbar kt-header-mobile--fixed kt-subheader--enabled kt-subheader--transparent" data-gr-c-s-loaded="true">
+
+    <!-- begin::Page loader -->
+    <!-- end::Page Loader -->
+    <!-- begin:: Page -->
+    <div class="kt-grid kt-grid--ver kt-grid--root kt-page">
+        <div class="kt-grid kt-grid--hor kt-grid--root  kt-login kt-login--v3 kt-login--signin" id="kt_login">
+            <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" style="background-image: url(/metronic/themes/metronic/theme/default/demo2/dist/assets/media/bg/bg-3.jpg);">
+                <div class="kt-grid__item kt-grid__item--fluid kt-login__wrapper">
+                    <div class="kt-login__container">
+                        @*<div class="kt-login__logo">
+                                <a href="#">
+                                    <img src="/metronic/themes/metronic/theme/default/demo2/dist/assets/media/logos/logo-5.png">
+                                </a>
+                            </div>*@
+                        <div class="kt-login__signin">
+                            <div class="kt-login__head">
+                                <h3 class="kt-login__title">ALTAIF TPA</h3>
+                            </div>
+                            @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @class = "kt-form", id = "frmLogin" }))
+                            {
+                                <div class="input-group">
+                                    <input class="form-control" type="text" id="UserName" placeholder="Email" name="UserName" autocomplete="off">
+                                </div>
+                                <div class="input-group">
+                                    <input class="form-control" type="password" id="Password" placeholder="Password" name="password">
+                                </div>
+                                <div class="row kt-login__extra">
+                                    <div class="col-lg-6">
+                                        <label class="kt-checkbox">
+                                            <input type="checkbox" name="remember"> Remember me
+                                            <span></span>
+                                        </label>
+                                    </div>
+                                    <div class="col-lg-6 forgot-password">
+                                        <a href="javascript:;" id="kt_login_forgot" class="kt-login__link">Forget Password ?</a>
+                                    </div>
+                                </div>
+                                <div class="kt-login__actions">
+                                    @*<button id="kt_login_signin_submit" class="btn btn-brand btn-elevate kt-login__btn-primary p-3 ml-2" style="font-size:16px">*@
+                                    <button id="kt_login_signin_submit"  class="btn btn-secondary btn-lg">
+                                    <span class="spinner-border spinner-border-sm d-none" id="btnlooder"></span>
+                                    Sign In
+                                    </button>
+                                </div>
+                            }
+                        </div>
+                        <div class="kt-login__signup">
+                            <div class="kt-login__head">
+                                <h3 class="kt-login__title">Sign Up</h3>
+                                <div class="kt-login__desc">Enter your details to create your account:</div>
+                            </div>
+                            <form class="kt-form" action="">
+                                <div class="input-group">
+                                    <input class="form-control" type="text" placeholder="Fullname" name="fullname">
+                                </div>
+                                <div class="input-group">
+                                    <input class="form-control" type="text" placeholder="Email" name="email" autocomplete="off">
+                                </div>
+                                <div class="input-group">
+                                    <input class="form-control" type="password" placeholder="Password" name="password">
+                                </div>
+                                <div class="input-group">
+                                    <input class="form-control" type="password" placeholder="Confirm Password" name="rpassword">
+                                </div>
+                                <div class="row kt-login__extra">
+                                    <div class="col kt-align-left">
+                                        <label class="kt-checkbox">
+                                            <input type="checkbox" name="agree">I Agree the <a href="#" class="kt-link kt-login__link kt-font-bold">terms and conditions</a>.
+                                            <span></span>
+                                        </label>
+                                        <span class="form-text text-muted"></span>
+                                    </div>
+                                </div>
+                                <div class="kt-login__actions">
+                                    <button id="kt_login_signup_submit" class="btn btn-brand btn-elevate kt-login__btn-primary">Sign Up</button>&nbsp;&nbsp;
+                                    <button id="kt_login_signup_cancel" class="btn btn-light btn-elevate kt-login__btn-secondary">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="kt-login__forgot">
+                            <div class="kt-login__head">
+                                <h3 class="kt-login__title">Forgotten Password ?</h3>
+                                <div class="kt-login__desc">Enter your email to reset your password:</div>
+                            </div>
+                            <form class="kt-form" id="form_forgot" action="@Url.Action("Forgot","Account")" method="post">
+                                <div class="input-group">
+                                    <input class="form-control" type="text" placeholder="Email" name="Email" id="kt_email" required>
+                                </div>
+                                <div class="kt-login__actions">
+                                    <button id="kt_login_forgot_submit" type="submit" class="btn btn-brand btn-elevate kt-login__btn-primary ladda-button" data-style="zoom-in" data-size="l"><span class="ladda-label">Sent</span><span class="ladda-spinner"></span></button>&nbsp;&nbsp;
+                                    <button id="kt_login_forgot_cancel" type="button" class="btn btn-light btn-elevate kt-login__btn-secondary">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end:: Page -->
+    <!-- begin::Global Config(global config for global JS sciprts) -->
+    <script>
+        var KTAppOptions = { "colors": { "state": { "brand": "#374afb", "light": "#ffffff", "dark": "#282a3c", "primary": "#5867dd", "success": "#34bfa3", "info": "#36a3f7", "warning": "#ffb822", "danger": "#fd3995" }, "base": { "label": ["#c5cbe3", "#a1a8c3", "#3d4465", "#3e4466"], "shape": ["#f0f3ff", "#d9dffa", "#afb4d4", "#646c9a"] } } };
+    </script>
+    <!-- end::Global Config -->
+    <!--begin::Global Theme Bundle(used by all pages) -->
+    <!--end::Global Theme Bundle -->
+    <!--begin::Page Scripts(used by this page) -->
+    @Scripts.Render("~/bundles/jquery")
+    <script src="~/Scripts/spin.min.js"></script>
+    <script src="~/Scripts/ladda.min.js"></script>
+
+    <script src="~/Content/assets/plugins/ladda/ladda.jquery.min.js"></script>
+
+    @Scripts.Render("~/bundles/bootstrap")
+
+    @Scripts.Render("~/bundles/login")
+    <!--end::Page Scripts -->
+    <!-- end::Body -->
+
+    <script type="text/javascript">
+        var ladda;
+        $(document).ready(function () {
+            $('#frmLogin').submit(function (e) {
+                debugger
+                $("#btnlooder").removeClass("d-none");
+                $("#kt_login_signin_submit").attr("disabled", true);
+               // startLaddaSpinWheel("kt_login_signup_submit");
+                e.preventDefault();
+
+                if ($("#UserName").val() == "" || $("#Password").val() == "") {
+                    ShowMessage("@Common.FillRequiredValues", AlertType.Error);
+                   
+                }
+
+                var $this = $(this);
+                var frmValues = $this.serialize();
+                $.ajax({
+                    type: $this.attr('method'),
+                    url: $this.attr('action'),
+                    data: frmValues,
+                    success: function (data) {
+                        //CloseProgressModel();
+                        debugger;
+                        if (data.IsSuccess) {
+                            window.location.href = data.URL;
+                        }
+                        else {
+                            ShowMessage(data.ErrorMessage, AlertType.Error);
+                        }
+                    }
+                })
+                .done(function () {
+                    console.log("Success");
+                })
+                .fail(function () {
+                    //CloseProgressModel();
+                    ShowMessage("@Common.ErrorOccurred", AlertType.Error);
+                });
+            });
+
+            $('#form_forgot').submit(function (e) {
+                e.preventDefault();
+                ladda.start();
+                var $this = $(this);
+                var frmValues = $this.serialize();
+                $.ajax({
+                    type: $this.attr('method'),
+                    url: $this.attr('action'),
+                    data: frmValues,
+                    success: function (data) {
+
+                        debugger;
+                        if (data.success) {
+                            $("#kt_email").val('');
+                            ShowMessage("Reset password link sent to your email.", AlertType.Success);
+                            ladda.stop();
+                        }
+                        else {
+                            ShowMessage(data.message, AlertType.Error);
+                            ladda.stop();
+                        }
+                    }
+                })
+                .done(function () {
+                    console.log("Success");
+                    $("#btnlooder").addClass("d-none");
+                    $("#kt_login_signin_submit").attr("disabled", false);
+                })
+                .fail(function () {
+                    //CloseProgressModel();
+                    ShowMessage("@Common.ErrorOccurred", AlertType.Error);
+                    $("#btnlooder").addClass("d-none");
+                    $("#kt_login_signin_submit").attr("disabled", false);
+                });
+            });
+
+            function CreateLadda(item) {
+                ladda = Ladda.create(item);
+            }
+
+            $("#kt_login_forgot_submit").click(function (e) {
+                CreateLadda(this);
+            });
+
+            
+
+        })
+
+          
+
+
+        $("#kt_login_signup_submit").click(function () {
+            alert("test")
+      startLaddaSpinWheel("kt_login_signup_submit")
+        });
+
+        $("#kt_login_forgot").click(function () {
+
+            $(".kt-login__signin").hide();
+            $(".kt-login__forgot").show();
+
+        });
+
+        $("#kt_login_forgot_cancel").click(function () {
+            $(".kt-login__forgot").hide();
+            $(".kt-login__signin").show();
+        });
+
+      
+
+
+
+//#region
+/******************************************** Start  ladda spinn wheel ************************************************/
+
+        function startLaddaSpinWheel(clickedButonId) {
+    debugger
+    var btnLadda = $("#" + clickedButonId).ladda();
+    btnLadda.ladda('start');
+}
+
+function stopLaddaSpinWheel(clickedButonId) {
+    var btnLadda = $("#" + clickedButonId).ladda();
+    btnLadda.ladda('stop');
+}
+
+/******************************************** End ladda spinn wheel ************************************************/
+//#endregion
+  
+
+   
+
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,202 @@
+﻿@using TPA.Common.Core.Resources
+
+@{
+    ViewBag.Title = Common.Customers;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            @Common.Customers
+            <small>@Common.Information</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> @Common.Home</a></li>
+            <li><a href="#">@Common.Customers</a></li>
+            <li class="active">@Common.AllCustomersInformation</li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title">@Common.AllCustomers</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <table id="datatable" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>@Common.Action</th>
+                                    <th>@Common.NameArabic</th>
+                                    <th>@Common.NameEnglish</th>
+                                    <th>@Common.Type</th>
+                                    <th>@Common.Class</th>
+                                    <th>@Common.Currency</th>
+                                    <th>@Common.Email</th>
+                                    <th>@Common.Phone</th>
+                                    <th>@Common.Nationality</th>
+                                    <th>@Common.Date</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>@Common.Action</th>
+                                    <th>@Common.NameArabic</th>
+                                    <th>@Common.NameEnglish</th>
+                                    <th>@Common.Type</th>
+                                    <th>@Common.Class</th>
+                                    <th>@Common.Currency</th>
+                                    <th>@Common.Email</th>
+                                    <th>@Common.Phone</th>
+                                    <th>@Common.Nationality</th>
+                                    <th>@Common.Date</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </section>
+    <!-- /.content -->
+</div>
+
+@section scripts {
+
+    @Scripts.Render("~/bundles/ForDatatables")
+
+    <script>
+
+
+    $(function () {
+        $('#datatable').DataTable({
+            //"scrollCollapse": true,
+            //"scrollX": true,
+            "order": [[9, "desc"]],
+            "lengthMenu": [[10, 25, 50, 100, 500, 1000], [10, 25, 50, 100, 500, 1000]],
+            columns: [
+                { 'data': 'CustomerId' },
+                { 'data': 'CustomerNameA' },
+                { 'data': 'CustomerNameE' },
+                { 'data': 'CustomerTypeName' },
+                { 'data': 'CustomerClassName' },
+                { 'data': 'CurrencyCode' },
+                { 'data': 'Email' },
+                { 'data': 'Phone' },
+                { 'data': 'NationalityName' },
+                {
+                    'data': 'CreatedDate',
+                    "render": function (value) {
+                        if (value === null) return "";
+                        return moment(value).format(DateFormat);
+                    }
+                }
+            ],
+            columnDefs: [
+                {
+                    targets: [0],
+                    orderable: false,
+                    render: function (data) {
+                        return '<a href="/CustomerManagement/Customer/CustomerDetail/' + data + '" target_blank><i class="fa fa-file-text-o"></i></a> &nbsp;&nbsp;&nbsp;   <a href="/CustomerManagement/Customer/Create/' + data + '" target_blank><i class="fa fa-edit"></i></a> &nbsp;&nbsp;&nbsp; <a href="#" class="deleteCustomer" data-customerId="' + data + '" ><i class="fa fa-trash"></i></a>'
+                    }
+                }
+            ],
+            bServerSide: true,
+            sAjaxSource: '/CustomerManagement/Customer/AllCustomersSearch',
+            sServerMethod: 'post',
+            "dom": "lBfrtip",
+            "buttons": [
+                {
+                    extend: 'copy',
+                    className: 'copyButton',
+                    text: '<i class="fa fa-clone"></i> Copy'
+                },
+                {
+                    extend: 'excel',
+                    text: '<i class="fa fa-file-excel-o"></i> Excel'
+                },
+                {
+                    extend: 'csv',
+                    text: 'Export csv',
+                    charset: 'utf-8',
+                    extension: '.csv',
+                    fieldSeparator: ';',
+                    fieldBoundary: '',
+                    filename: 'export',
+                    bom: true,
+                    text: '<i class="fa fa-file-excel-o"></i> CSV'
+                },
+                //{
+                //    extend: 'pdf',
+                //    charset: 'utf-8',
+                //    text: '<i class="fa fa-file-pdf-o"></i> Pdf'
+                //},
+                {
+                    extend: 'print',
+                    text: '<i class="fa fa-print"></i> Print & PDF',
+                    customize: function (win) {
+                        $(win.document.body)
+                            .css('font-size', '10pt')
+                            .prepend(
+                                '<img src="https://altaif.co/en/wp-content/uploads/2017/06/LOGO-dark.png" style="position:absolute;opacity: 0.3; top:200; left:150;" />'
+                            );
+                        $(win.document.body).find('table')
+                            .addClass('compact')
+                            .css('font-size', 'inherit');
+                    }
+                }
+            ],
+            'processing': true,
+            'language': {
+                'loadingRecords': '&nbsp;',
+                'processing': '<div class="modal-body" style="text-align: center;"><img src="../../Images/loader2.gif" width="250px" />  </div>'
+            }
+        });
+        $(document).on('click', '.deleteCustomer', function (e) {
+
+            var custId = $(this).attr("data-customerId");
+            var CurrentRow = $(this).closest('tr');
+
+            if (confirm("@Common.AreYouSureToDeleteThisRecord")) {
+                OpenProgressModel();
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("Delete", "Customer", new { Area = "CustomerManagement" })',
+                        dataType: 'json',
+                        data: { id: custId },
+                        success: function (data) {
+                            CloseProgressModel();
+
+                                if (data.IsSuccess) {
+                                    ShowMessage("@Common.RecordDeleted", AlertType.Success);
+                                    CurrentRow.remove();
+                                }
+                                else {
+                                    ShowMessage(data.ErrorMessage, AlertType.Error);
+                                }
+
+                        },
+                        error: function (ex) {
+                            CloseProgressModel();
+                            alert('Failed to retrieve states.' + ex);
+                        }
+                    });
+                return false;
+            }
+
+        });
+    });
+    </script>
+}

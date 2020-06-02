@@ -1,0 +1,15 @@
+﻿#MessageBox {
+    position: absolute;
+    z-index: 1400;
+    top: 15%;
+    right: 1%;
+    margin: 0px auto;
+    text-align: center;
+    display: none;
+    min-width: 17%;
+}
+
+.required:after {
+    content: " *";
+    color: red;
+}

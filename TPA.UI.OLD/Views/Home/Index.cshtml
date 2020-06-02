@@ -1,0 +1,156 @@
+﻿@{
+    ViewBag.Title = "Main page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
+    <div class="kt-portlet mt-3">
+        <div class="kt-portlet__head">
+            <div class="kt-portlet__head-label">
+                <span class="kt-portlet__head-icon">
+                    <i class="flaticon2-graph"></i>
+                </span>
+                <h3 class="kt-portlet__head-title">
+                    Search
+                </h3>
+            </div>
+        </div>
+        <div class="kt-portlet__body">
+            <div class="row">
+                <div class="col-lg-4 kt-margin-b-10">
+                    <label>Select Provider</label>
+                    <input type="text" class="form-control kt-input" />
+                </div>
+                <div class="col-lg-4 kt-margin-b-10">
+                    <label>Select Provider</label>
+                    <input type="text" class="form-control kt-input" />
+                </div>
+                <div class="col-lg-4 kt-margin-b-10">
+                    <label>Company Name</label>
+                    <input type="text" class="form-control kt-input" />
+                </div>
+                <div class="col-lg-4 kt-margin-b-10">
+                    <label>Employee Name</label>
+                    <input type="text" class="form-control kt-input" />
+                </div>
+                <div class="col-lg-4 kt-margin-b-10">
+                    <label>From Date</label>
+                    <div class="input-group date" data-provide="datepicker">
+                        <input type="text" class="form-control kt-input">
+                        <div class="input-group-append">
+                            <span class="input-group-text"><i class="flaticon-calendar"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 kt-margin-b-10">
+                    <label>To Date</label>
+                    <div class="input-group date" data-provide="datepicker">
+                        <input type="text" class="form-control kt-input">
+                        <div class="input-group-append">
+                            <span class="input-group-text"><i class="flaticon-calendar"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 kt-margin-b-10">
+                    <label>Employee Insurance Id</label>
+                    <input type="text" class="form-control kt-input" />
+                </div>
+                <div class="col-lg-3 kt-margin-b-10">
+                    <label>Status</label>
+                    <input type="text" class="form-control kt-input" />
+                </div>
+                <div class="col-lg-3 kt-margin-b-10">
+                    <label>Visit Type</label>
+                    <input type="text" class="form-control kt-input" />
+                </div>
+                <div class="col-lg-3 kt-margin-b-10">
+                    <label>Claim Id</label>
+                    <input type="text" class="form-control kt-input" />
+                </div>
+                <div class="col-lg-3 kt-margin-t-10">
+                    <button class="btn btn-primary">Search</button>
+                </div>
+                <div class="col-lg-12 kt-margin-t-10">
+                    <div id="kt_datatable"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var datatable = $('#kt_datatable').KTDatatable({
+            data: {
+                type: 'local',
+                source: {
+
+                },
+                pageSize: 10
+            },
+
+            // layout definition
+            layout: {
+                scroll: false,
+                footer: false,
+            },
+
+            // column sorting
+            sortable: true,
+
+            pagination: true,
+
+            search: {
+                input: $('#generalSearch'),
+            },
+
+            // columns definition
+            columns: [
+                {
+                    field: 'claim_id',
+                    title: 'Claim Id',
+                },
+                {
+                    field: 'provider',
+                    title: 'Provider',
+                },
+                {
+                    field: 'visit_type',
+                    title: 'Visit Date',
+                },
+                {
+                    field: 'visit_date',
+                    title: 'Visit Date',
+                },
+                {
+                    field: 'visitor_name',
+                    title: 'Visitor Name',
+                },
+                {
+                    field: 'modified_by',
+                    title: 'Last Modified By',
+                },
+                {
+                    field: 'created_at',
+                    title: 'Created By',
+                },
+                {
+                    field: 'Actions',
+                    title: 'Actions',
+                    sortable: false,
+                    width: 130,
+                    overflow: 'visible',
+                    textAlign: 'center',
+                    template: function (row, index, datatable) {
+                        return '<a href="#" class="btn btn-hover-brand btn-icon btn-pill" title="Edit details">\
+                        <i class="la la-edit"></i>\
+                    </a>\
+                    <a href="#" class="btn btn-hover-danger btn-icon btn-pill" title="Delete">\
+                        <i class="la la-trash"></i>\
+                    </a>';
+                    },
+                }],
+
+        });
+    });
+</script>
+

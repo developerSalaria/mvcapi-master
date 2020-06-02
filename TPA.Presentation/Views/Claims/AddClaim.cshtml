@@ -1,0 +1,699 @@
+﻿@using Newtonsoft.Json;
+@using TPA.Common.Core.Model;
+@model AddClaimModel
+
+
+<style>
+    .select2-container--default .select2-results__option--highlighted[aria-selected] {
+        background-color: rgb(44, 135, 240);
+        color: #fff;
+        border: 0px;
+    }
+</style>
+<div class="kt-portlet kt-portlet--mobile pea-page" style="box-shadow: 5px 5px 15px 5px rgba(0,0,0,0.35);">
+    <div class="kt-portlet">
+        <div class="kt-portlet__head" style="background: #F35869 !important;min-height:42px;border-radius:4px;">
+            <div class="kt-portlet__head-label">
+                <span class="kt-portlet__head-icon">
+                    <i class="flaticon2-graph text-white"></i>
+                </span>
+                <h3 class="kt-portlet__head-title text-white">
+                    Add Claim
+                </h3>
+            </div>
+        </div>
+        <div class="kt-portlet__body">
+            <form id="addClaimForm">
+                <div class="row">
+                    <div class="col-lg-11">
+                        <div class="row kt-margin-b-20">
+                            <div class="col-lg-6 kt-margin-b-10">
+                                <label class="font-weight-bold">Provider :</label>
+                                @Html.DropDownListFor(m => m.Claim.ProviderID, Dropdowns.GetProviders(), new { @class = "form-control kt-input dropDownSelect2 dropDownSelect2" })
+                            </div>
+                            <div class="col-lg-6">
+                                <label class="font-weight-bold">Status :</label>
+                                @Html.DropDownListFor(m => m.Claim.StatusID, Dropdowns.GetStatus(), new { @class = "form-control kt-input dropDownSelect2 dropDownSelect2" })
+                            </div>
+                            <div class="col-lg-8 kt-margin-b-10">
+                                <label class="font-weight-bold">Staff code :</label>
+                                @Html.TextBoxFor(m => m.Claim.PolicyCode, new { @class = "form-control kt-input", id = "PolicyCode" })
+                             
+                            </div>
+                            <div class="col-lg-3 align-items-end d-flex kt-margin-b-10">
+                                <button type="button" class="btn text-white" style="background-color: #F35869;" id="searchBtn"><i class="fas fa-search"></i>Search</button>
+                            </div>
+                            <div class="col-lg-12 kt-margin-b-10" id="insuranceDetails">
+                                <div class="modal-body" id="detailClaimsModalBody">
+
+                                </div>
+                            </div>
+                            <div class="col-lg-4 kt-margin-b-10">
+                                <label class="font-weight-bold">Visit Type :</label>
+                                @Html.DropDownListFor(m => m.Claim.VisitTypeID, Dropdowns.GetVisitTypes(), new { @class = "form-control kt-input dropDownSelect2" })
+                            </div>
+                            <div class="col-lg-4 kt-margin-b-10">
+                                <label class="font-weight-bold">Visit Date :</label>
+                                <div class="input-group date">
+                                    @Html.TextBoxFor(m => m.Claim.VisitDate, new { @class = "form-control kt-input", id = "txtVisitDateHolder" })
+
+                                    <div class="input-group-append">
+                                        <span class="input-group-text"><i class="flaticon-calendar"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 kt-margin-b-10">
+                                <label class="font-weight-bold">Speciality Of Doctor :</label>
+                                @Html.DropDownListFor(m => m.Claim.DoctorSpecialityID, Dropdowns.GetDoctorSpecialities(), new { @class = "form-control kt-input dropDownSelect2" })
+                            </div>
+                            <div class="col-lg-8 kt-margin-b-10">
+                                <label class="font-weight-bold">Symptoms :</label>
+                                @*@Html.TextBox("SymptomsSearch", "", new { @class = "form-control kt-select", id = "symptomsCode" })*@
+                                <select class="form-control kt-select" id = "symptomsCode" ></select>
+                            </div>
+                            @*<div class="col-lg-3 align-items-end d-flex kt-margin-b-10">
+                                <button type="button" class="btn text-white" style="background-color:#F35869 !important" id="addSymptom"><i class="fas fa-plus"></i>Add To List</button>
+                            </div>*@
+                            <div class="col-lg-12 d-none" id="symptomsGrid">
+                                <div class="col-lg-12">
+                                    <h4 class="font-weight-bold">Symptoms</h4>
+                                </div>
+                                <div class="col-lg-12 kt-margin-t-10 kt-margin-b-20 list-view">
+                                    @* header row *@
+                                    <div class="row header-row">
+                                        <div class="col-lg-3 list-column"><p class="font-weight-normal">Code</p></div>
+                                        <div class="col-lg-8 list-column"><p class="font-weight-normal">Sympton Description</p></div>
+                                        <div class="col-lg-1 list-column"></div>
+                                    </div>
+                                    @* children rows *@
+                                </div>
+                            </div>
+
+                            <div class="col-lg-8 kt-margin-b-10">
+                                <label class="font-weight-bold">Services :</label>
+                                @Html.TextBox("ServicesSearch", "", new { @class = "form-control kt-select", id = "serviceCode" })
+                            </div>
+                            <div class="col-lg-3 align-items-end d-flex kt-margin-b-10">
+                                <button type="button" class="btn text-white" style="background-color: #F35869;" id="addService"><i class="fas fa-plus"></i>Add To List</button>
+                            </div>
+                            <div class="col-lg-12 d-none" id="servicesGrid">
+                                <div class="col-lg-12">
+                                    <h4 class="font-weight-bold">Services</h4>
+                                </div>
+                                <div class="col-lg-12 kt-margin-t-10 kt-margin-b-20 list-view">
+                                    @* header row *@
+                                    <div class="row header-row">
+                                        <div class="col-lg-1 list-column"><p class="font-weight-normal">Code</p></div>
+                                        <div class="col-lg-2 list-column"><p class="font-weight-normal">Service Name</p></div>
+                                        <div class="col-lg-1 list-column"><p class="font-weight-normal">Service Limit</p></div>
+                                        <div class="col-lg-1 list-column"><p class="font-weight-normal">Service Amount</p></div>
+                                        <div class="col-lg-2 list-column"><p class="font-weight-normal">Rule</p></div>
+                                        <div class="col-lg-1 list-column"><p class="font-weight-normal">Co-share percentage</p></div>
+                                        <div class="col-lg-1 list-column"><p class="font-weight-normal">Co-share Amount</p></div>
+                                        <div class="col-lg-1 list-column"><p class="font-weight-normal">Balance</p></div>
+                                        <div class="col-lg-1 list-column"><p class="font-weight-normal">Status</p></div>
+                                        <div class="col-lg-1 list-column list-column--icon"></div>
+                                    </div>
+
+                                    <div class="row row--total" style="display: none;" >
+                                        <div class="col-lg-1 list-column"><p class="font-weight-normal"></p></div>
+                                        <div class="col-lg-2 list-column"><p class="font-weight-bold"></p></div>
+                                        <div class="col-lg-2 list-column" id="TotalServiceValue"></div>
+                                        <div class="col-lg-2 list-column"><p class="font-weight-bold"></p></div>
+                                        <div class="col-lg-1 list-column" id="TotalCoShareValue"></div>
+                                        <div class="col-lg-2 list-column" id="TotalInsuredValue"></div>
+                                        <div class="col-lg-2 list-column"><p class="font-weight-bold"></p></div>
+                                    </div>
+
+                                </div>
+                                @*<div class="col-lg-12 d-flex justify-content-end">
+                                    <button class="btn btn-info" id="CalculateBtn">Calculate</button>
+                                </div>*@
+                            </div>
+
+                            <div class="col-lg-6 kt-margin-b-10">
+                                <label class="font-weight-bold">Provider Notes :</label>
+                                @Html.TextAreaFor(m => m.Claim.ProviderNotes, new { @class = "form-control kt-select" })
+                            </div>
+                            <div class="col-lg-6 kt-margin-b-10">
+                                <label class="font-weight-bold">Auditor Notes :</label>
+                                @Html.TextAreaFor(m => m.Claim.AuditorNotes, new { @class = "form-control kt-select" })
+                            </div>
+                            <div class="col-m-3 kt-margin-r-20 kt-margin-l-10 kt-margin-t-20">
+                                <button class="btn text-white" style="background-color: #F35869;"><i class="fas fa-plus"></i>Add Claim</button>
+                            </div>
+                            <div class="col-m-3  kt-margin-r-20 kt-margin-t-20">
+                                <button class="btn btn-primary" type="button" onclick="clearClaimsForm()"><i class="fas fa-undo"></i>Reset</button>
+                            </div>
+                            <div class="col-m-3 kt-margin-t-20 kt-margin-r-20">
+                                <button class="btn text-white" type="button" onclick="getHomePage()" style="background-color: red;"><i class="fas fa-window-close"></i>Cancel</button>
+                            </div>
+                            <div class="col-m-3 kt-margin-t-20">
+                                <button class="btn btn-secondary" id="addAttachment"><i class="fas fa-paperclip"></i>Add Attachment</button>
+                                @Html.TextBoxFor(m => m.PostedFile, new { type = "file", id = "uploadFile", style = "display:none;" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="viewClaimsModal" class="modal animated slideInRight in slideInLeft out" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl" style="max-width: 85%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title font-weight-bold">
+                    Claim Details
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body" id="viewClaimsModalBody">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-clean btn-bold btn-upper btn-font-sm" id="downloadBtn">Download Attachment</button>
+                <button type="button" class="btn btn-primary btn-bold btn-upper btn-font-sm" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts
+    {
+    @*<script src="~/Scripts/Common/Common.js" type="text/javascript"></script>*@
+    @Scripts.Render("~/Scripts/Datatable/Datatable/datatables.min.js")
+<script type="text/javascript">
+        $(document).ready(function () {
+            debugger
+            var statusValue = $("#Claim_StatusID").val();
+            
+            if (statusValue === null || statusValue === 1 || statusValue === "" || statusValue === "1") {
+                debugger
+                $("#Claim_StatusID").val(17);
+            }
+            $("#VisitDate").datepicker();
+            InitCustomDropdown();
+            $('#txtVisitDateHolder').datepicker({ dateFormat: 'dd/mm/yy' });
+            $('#txtVisitDateHolder').datepicker('setDate', new Date());
+
+            $("#downloadBtn").click(function () {
+                var claimId = $("#viewClaimId").val();
+                if (claimId) {
+                    window.open(`@Url.Action("DownloadAttachment", "Claims")?claimId=${claimId}`);
+                }
+            })
+
+           
+             var serviceTypes = @Html.Raw(JsonConvert.SerializeObject(Dropdowns.GetServiceTypes("")));
+            var selectedServiceTypeIDs = [];
+            var selectedSymptomIDs = [];
+            var claimServicesBalance;
+
+            $("#addAttachment").click(function (e) {
+                e.preventDefault();
+                $("#uploadFile").click();
+            })
+
+            $("#addClaimForm").submit(function (e) {
+                debugger;
+                //if ($("#addClaimForm").valid()) {
+                    var policyCode = $("#PolicyCode").val();
+                    if (policyCode == "" || policyCode == null || policyCode == undefined) {
+                        swal.fire("Enter policy code");
+                    };
+                    e.preventDefault();
+
+                    var fileName = $("#uploadFile").val();
+
+                    if (!fileName) {
+                        Swal.fire({
+                            text: 'Are you sure , you want to continue without attachment?',
+                            type: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Yes',
+                            cancelButtonText: 'No'
+                        }).then(function (result) {
+                            if (result.value) {
+                                debugger
+                                postFormData();
+                            }
+                        })
+                    } else {
+                        postFormData();
+                    }
+                //}
+            })
+
+            function postFormData() {
+                var data = new FormData($("#addClaimForm")[0]);
+
+                for (var i = 0; i < selectedSymptomIDs.length; i++) {
+                    data.append('Symptoms[]', selectedSymptomIDs[i]);
+                }
+
+                //for (var i = 0; i < selectedServiceTypeIDs.length; i++) {
+                //    data.append('Services[]', selectedServiceTypeIDs[i]);
+                //}
+
+
+                $(".servicesList").each(function (i, item) {
+                    debugger;
+                    data.append('Services[' + i + '].ServiceTypeId', $(item).attr("data-id"));
+                    data.append('Services[' + i + '].ClaimAmount', $(item).find(".claim_amount").val());
+                });
+
+
+                $.ajax({
+                    url: "@Url.Action("AddClaim", "Claims")",
+                    type: "POST",
+                    enctype: 'multipart/form-data',
+                    data: data,
+                    processData: false,
+                    contentType: false,
+                    success: function (data) {
+                        swal.fire({
+                            title: "Claim details saved succesfully",
+                            type: "success"
+                        }).then(function () {
+                            clearClaimsForm();
+                        });
+                    }
+                })
+                //empty the value of array
+                selectedServiceTypeIDs = [];
+                selectedSymptomIDs = [];
+            }
+
+
+
+            function InitCustomDropdown() {
+                //used for custom matcher for searching
+                var configParamsObj = {
+                    background: '#f00',
+                    minimumResultsForSearch: 3, // Overrides default of 15 set above
+                    matcher: function (params, data) {
+                        // If there are no search terms, return all of the data
+                        if ($.trim(params.term) === '') {
+                            return data;
+                        }
+                        // `params.term` should be the term that is used for searching
+                        // `data.text` is the text that is displayed for the data object
+                        if (data.text.toLowerCase().startsWith(params.term.toLowerCase())) {
+                            var modifiedData = $.extend({}, data, true);
+                            ///modifiedData.text += ' (matched)';
+
+                            // You can return modified objects from here
+                            // This includes matching the `children` how you want in nested data sets
+                            return modifiedData;
+                        }
+
+                        // Return `null` if the term should not be displayed
+                        return null;
+                    }
+                };
+                $("select.dropDownSelect2").select2(configParamsObj);
+            }
+
+            $("#searchBtn").click(function () {
+                $("#detailClaimsModalBody").removeClass("d-none");
+                var policyCode = $("#PolicyCode").val();
+                debugger
+                $.ajax({
+                    url: "@Url.Action("ClaimDetail", "Claims")",
+                    data: {
+                        policyCode: policyCode,
+                    },
+                    success: function (html)
+                    {
+
+                        debugger
+                        $("#detailClaimsModalBody").html(html);
+                        var serverUri = '@Url.Action("SearchClaims", "Claims")';
+                        $('#personsListDiv').show();
+                        $('#myDatatable').DataTable({
+                            "bPaginate": false,
+                            "bInfo": false,
+                            "processing": true, // for show progress bar
+                            "serverSide": true, // for process server side
+                            "filter": false, // this is for disable filter (search box)
+                            "orderMulti": false, // for disable multiple column at once
+                            "language": {
+                                "loadingRecords": "&nbsp;",
+                                "sProcessing": "<i class='fas fa-spinner fa-2x text-success fa-spin'></i>",
+                                "emptyTable": "No data available in table",
+                                "info": "sInfo",
+                                "infoFiltered": "sInfoFiltered",
+                                "infoPostFix": "",
+                                "thousands": ",",
+                                "lengthMenu": "Show__MENU__entries",
+                                "loadingRecords": "Loading",
+                                "processing": "Processing",
+                                "search": "Search:",
+                                "zeroRecords": "No records",
+                                "aria": {
+                                    "sortAscending": ": Asc",
+                                    "sortDescending": ": Desc"
+                                }
+                            },
+                            "bDestroy": true,
+                            "ajax": {
+                                "url": serverUri,
+                                "type": "Get",
+                                //"datatype": "json",
+                                "data": function (d) {
+                                    debugger;
+                                    d.PolicyCode = $("#PolicyCode").val();//change textbox name here
+                                }
+                            },
+                            "columns": [
+                                { "data": "ID", "name": "ID", "autoWidth": true },
+                                { "data": "ClaimNo", "name": "ClaimNo", "autoWidth": true },
+                                 { "data": "VisitDatestr", "name": "VisitDatestr",format: 'DD/MM/YYYY', "autoWidth": true },
+
+                                {
+                                    "data": "ID", "orderable": false, "width": "3%", "render": function (data, type, row) {
+                                        return '<button type="button" class="btn btn-sm btn-danger btn-icon" onclick="loadClaimDetailsByClaimNo(\'' + row.ID + '\')"><i class="fas fa-eye"></i></button>';
+                                    }
+                                }
+                            ],
+                            "initComplete": function () {
+                                $('[data-toggle="tooltip"]').tooltip();
+
+                            }
+                        }).on('draw', function () {
+                            $('[data-toggle="tooltip"]').tooltip();
+                        });
+
+                    }
+                })
+
+                  GetServices(policyCode);
+                GetServcieBalance(policyCode);
+              
+            });
+
+
+
+
+            $("#CalculateBtn").click(function (e) {
+                debugger;
+                e.preventDefault();
+                if (selectedServiceTypeIDs.length > 0) {
+                    var selectedServices = serviceTypes.filter(ser => selectedServiceTypeIDs.indexOf(ser.ID) !== -1);
+                    if (selectedServices.length > 0) {
+                        var totalServiceVal = selectedServices.map(ser => ser.ServiceAmount).reduce((prev, curr) => prev + curr);
+                        $("#TotalServiceValue").html(totalServiceVal);
+
+                        var totalCoshare = selectedServices.map(ser => ser.CoShareAmount).reduce((prev, curr) => prev + curr);
+                        $("#TotalCoShareValue").html(totalCoshare);
+
+                        var totalInsured = selectedServices.map(ser => ser.InsuredAmount).reduce((prev, curr) => prev + curr);
+                        $("#TotalInsuredValue").html(totalInsured);
+                    }
+                }
+            })
+            //$("#addSymptom").click(function () {
+            //    $("#symptomsGrid").removeClass("d-none");
+            //})
+
+
+
+            $("#addService").click(function () {
+        
+                var serviceCode = $("#serviceCode").val();
+                var claimedAmount = 0;
+          
+                var service = serviceTypes.filter(ser => ser.EName == serviceCode)[0];
+                var textBalance = 0;
+                var Balance = service.ServiceAmount;
+                debugger
+                var serviceBalance = claimServicesBalance.filter(ser => ser.ServicesTypeID == service.ID)[0];
+                if (serviceBalance) {
+                    
+                    Balance = serviceBalance.Balance
+                }
+                /*onmouseup="calculateBalance(this)" onkeyup="calculateBalance(this)"*/
+                if (service && selectedServiceTypeIDs.indexOf(service.ID) === -1) {
+                    selectedServiceTypeIDs.push(service.ID);
+                    if (serviceCode) {
+                        var row = `<div class="row servicesList" data-services-list="true" data-id="${service.ID}">
+                                    <div class="col-lg-1 list-column">${service.ID}</div>
+                                    <div class="col-lg-2 list-column">${service.EName}</div>
+                                    <div class="col-lg-1 list-column">${service.ServiceAmount}</div>  
+                                    <div class="col-lg-1 list-column"><input data-service-amount="${textBalance}"  class="col-lg-12 claim_amount" type="number" value=${textBalance} /></div>
+                                    <div class="col-lg-2 list-column">${service.EName}</div>
+                                    <div class="col-lg-1 list-column">${service.CoSharePercentage}</div>
+                                    <div class="col-lg-1 list-column">${service.CoShareAmount}</div>
+                                     <div class="col-lg-1 list-column balance">${Balance}</div>
+                                    <div class="col-lg-1 list-column">Active</div>
+                                    <div class="col-lg-1 list-column list-column--icon">
+                                        <i class="flaticon-delete delete-service" style="color: red;"></i>
+                                    </div>
+                                </div>`
+                        var totalRow = $("#servicesGrid").find(".row--total");
+                        $(row).insertBefore(totalRow);
+                        $("#servicesGrid").removeClass("d-none");
+                    }
+                }
+                $("#serviceCode").val("")
+            })
+
+            $("#servicesGrid").on("click", ".delete-service", function () {
+                var confirmation = confirm("Are you sure you want to delete the service?");
+                if (confirmation) {
+                    var id = $(this).closest(".row").data("id");
+                    var index = selectedServiceTypeIDs.indexOf(id);
+
+                    if (index > -1) {
+                        selectedServiceTypeIDs.splice(index, 1);
+                    }
+                    $(this).closest(".row").remove();
+
+                    if ($("#servicesGrid").find(".row").length == 2) {
+                        $("#servicesGrid").addClass("d-none");
+                    }
+                }
+            })
+            //$("#addSymptom").click(function () {
+            //    debugger
+            //    var symptomsCode = $("#symptomsCode").val();
+            //    var symptom = symptoms.filter(ser => ser.EName == symptomsCode)[0];
+            //    if (symptom && selectedSymptomIDs.indexOf(symptom.ID) === -1) {
+            //        selectedSymptomIDs.push(symptom.ID);
+            //        var row = `<div class="row symptomsList" data-symptoms-list="true" data-id="${symptom.ID}">
+            //                        <div class="col-lg-3 list-column">${symptom.EName}</div>
+            //                        <div class="col-lg-8 list-column">${symptom.AName}</div>
+            //                        <div class="col-lg-1 list-column list-column--icon">
+            //                            <i class="flaticon-delete delete-symptom" style="color: red;"></i>
+            //                        </div>
+            //                    </div>`
+            //        var view = $("#symptomsGrid").find(".list-view");
+            //        $(view).append(row);
+            //        $("#symptomsGrid").removeClass("d-none");
+            //    }
+            //    $("#symptomsCode").val("");
+            //})
+            $("#symptomsGrid").on("click", ".delete-symptom", function () {
+                var confirmation = confirm("Are you sure you want to delete the symptom?");
+                if (confirmation) {
+                    var id = $(this).closest(".row").data("id");
+                    var index = selectedSymptomIDs.indexOf(id);
+
+                    if (index > -1) {
+                        selectedSymptomIDs.splice(index, 1);
+                    }
+                    $(this).closest(".row").remove();
+
+                    if ($("#symptomsGrid").find(".row").length == 1) {
+                        $("#symptomsGrid").addClass("d-none");
+                    }
+                }
+            })
+
+            var substringMatcher = function (strs) {
+                return function findMatches(q, cb) {
+                    var matches, substringRegex;
+
+                    // an array that will be populated with substring matches
+                    matches = [];
+
+                    // regex used to determine if a string contains the substring `q`
+                    substrRegex = new RegExp(q, 'i');
+
+                    // iterate through the pool of strings and for any string that
+                    // contains the substring `q`, add it to the `matches` array
+                    $.each(strs, function (i, str) {
+                        if (substrRegex.test(str)) {
+                            matches.push(str);
+                        }
+                    });
+
+                    cb(matches);
+                };
+            };
+            //$('#symptomsCode').typeahead({
+            //    hint: true,
+            //    highlight: true,
+            //    minLength: 1
+            //},
+            //    {
+            //        name: 'symptoms',
+            //        source: substringMatcher(symptoms.map(t => t.EName))
+            //    });
+
+            $('#symptomsCode').select2({
+                ajax: {
+                    url: '@Url.Action("SearchSymtoms", "Claims")',
+                    dataType: 'json',
+                    type: "GET",
+                    data: function (params) {
+                        return {
+                            q: params.term, // search term
+                            page: params.page
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: $.map(data, function (item) {
+                                return {
+                                    text: item.AName,
+                                    id: item.ID,
+                                    ename:item.EName
+                                }
+                            })
+                        };
+                    },
+                    cache: true
+                },
+                placeholder: 'Search symptoms',
+                templateSelection: function (data, container) {
+                    debugger;
+
+                    if (data.id != "")
+                        AddSymptom(data);
+
+                    $(data.element).attr('data-custom-attribute', data.customValue);
+                    return data.text;
+                }
+            });
+
+            function AddSymptom(symptom) {
+
+                if (symptom && selectedSymptomIDs.indexOf(symptom.id) === -1) {
+                    selectedSymptomIDs.push(symptom.id);
+                    var row = `<div class="row symptomsList" data-symptoms-list="true" data-id="${symptom.id}">
+                                    <div class="col-lg-3 list-column">${symptom.ename}</div>
+                                    <div class="col-lg-8 list-column">${symptom.text}</div>
+                                    <div class="col-lg-1 list-column list-column--icon">
+                                        <i class="flaticon-delete delete-symptom" style="color: red;"></i>
+                                    </div>
+                                </div>`
+                    var view = $("#symptomsGrid").find(".list-view");
+                    $(view).append(row);
+                    $("#symptomsGrid").removeClass("d-none");
+                }
+
+            }
+
+            function GetServcieBalance(policyCode) {
+                  $.ajax({
+                    url: "@Url.Action("GetServiceBalanceByPolicyCode", "Claims")",
+                    data: {
+                        policyCode: policyCode,
+                    },
+                    success: function (result)
+                    {
+                        debugger;
+                        claimServicesBalance = result;
+                    }
+                })
+
+
+            }
+            function GetServices(policyCode) {
+                  $.ajax({
+                    url: "@Url.Action("GetServicesByPolicyCode", "Claims")",
+                    data: {
+                        policyCode: policyCode,
+                    },
+                    success: function (result)
+                    {
+                        debugger;
+                        serviceTypes = result;
+                    }
+                })
+
+
+            }
+            $('#serviceCode').typeahead({
+                hint: true,
+                highlight: true,
+                minLength: 1
+            },
+                {
+                    name: 'services',
+                    source: substringMatcher(serviceTypes.filter(ser => selectedServiceTypeIDs.indexOf(ser.ID) == -1).map(t => t.EName))
+                });
+        });
+
+
+
+
+        function clearClaimsForm() {
+            debugger
+            $("#PolicyCode").val("");
+            $("#symptomsCode").val("");
+            $("#serviceCode").val("");
+            $("#Claim_ProviderNotes").val("");
+            $("#Claim_AuditorNotes").val("");
+            // window.location.href = '@Url.Content("~/claims/addclaim")';
+
+             clearAddedServicesList();
+            clearAddedSymptomsList();
+
+             $("#detailClaimsModalBody").addClass("d-none");
+            $('#txtVisitDateHolder').datepicker('setDate', new Date());
+            $("#symptomsGrid").addClass("d-none");
+            $("#servicesGrid").addClass("d-none");
+            $("#TotalServiceValue").html("");
+            $("#TotalCoShareValue").html("");
+            $("#TotalInsuredValue").html("");
+            selectedServiceTypeIDs = [];
+                selectedSymptomIDs = [];
+    }
+    
+    //use to clear Added Services List
+    function clearAddedServicesList() {
+        $('.servicesList[data-services-list="true"]').each(function () {
+            $(this).remove();
+        });
+        $("#CalculateBtn").click();
+    }
+
+     //use to clear Added Symptoms
+    function clearAddedSymptomsList() {
+        $('.symptomsList[data-symptoms-list="true"]').each(function () {
+            $(this).remove();
+        });
+    }
+
+
+        function getHomePage() {
+             window.location.href = '@Url.Content("~/Home/Index")';
+        }
+
+    function calculateBalance(inputClaimAmount) {
+        debugger;
+        var claimAmount = parseFloat($(inputClaimAmount).val() == "" ? "0" : $(inputClaimAmount).val());
+        var serviceAmount = parseFloat($(inputClaimAmount).attr("data-service-amount"));
+        var balance = serviceAmount - claimAmount;
+        $(inputClaimAmount).parents(".servicesList").find('.balance').html(balance);
+     
+    }
+</script>
+}

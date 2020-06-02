@@ -1,0 +1,146 @@
+﻿@media print {
+    .bg-color-grey {
+        background-color: #C5C3C6 !important;
+    }
+
+    td.bg-color-grey {
+        background-color: #C5C3C6 !important;
+    }
+    th.bg-color-grey {
+        background-color: #C5C3C6 !important;
+    }
+    thead.bg-color-grey {
+        background-color: #C5C3C6 !important;
+    }
+    .border-bottom-only {
+        border: none !important;
+        border-bottom: 1px solid !important;
+    }
+    body {
+        -webkit-print-color-adjust: exact;
+    }
+}
+
+@media print {
+   
+}
+
+.table > thead > tr > th {
+    background-color: #C5C3C6;
+}
+
+.table-bordered {
+    border: 0px;
+}
+
+    .table-bordered th, .table-bordered td {
+        border-color: #6c757d;
+    }
+
+    .table-bordered thead th {
+        border-bottom: 1px solid #6c757d;
+    }
+
+.table tr td, .table tr td span {
+    color: #444 !important;
+}
+
+.table .no-border-table-row td {
+    border: 0px;
+}
+
+.bg-color-grey {
+    background-color: #C5C3C6;
+}
+table.center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.table .no-bottom-border-table-row td {
+    border-bottom: 0px;
+}
+
+.table .no-top-border-table-row td {
+    border-top: 0px;
+}
+.table .top-bottom-border-table-row td {
+    border-top: 1px solid #6c757d;
+    border-bottom: 1px solid #6c757d;
+}
+
+.border-bottom-only {
+    border: none !important;
+    border-bottom: 1px solid !important;
+}
+
+.width-5-per {
+    width: 5% !important;
+}
+
+.width-10-per {
+    width: 10% !important;
+}
+.width-15-per {
+    width: 15% !important;
+}
+
+.width-20-per {
+    width: 20% !important;
+}
+.width-30-per {
+    width: 30% !important;
+}
+.width-40-per {
+    width: 40% !important;
+}
+.width-50-per{
+    width:50% !important;
+}
+.width-60-per {
+    width: 60% !important;
+}
+.width-70-per {
+    width: 70% !important;
+}
+.width-80-per {
+    width: 80% !important;
+}
+.width-90-per {
+    width: 90% !important;
+}
+.width-95-per {
+    width: 95% !important;
+}
+
+.report-ministry-logo > img {
+    width: 40%;
+    clear: both;
+}
+.clear{
+    clear:both!important;
+}
+
+.required-field-label:after {
+    color: red;
+    content: "*";
+}
+
+table {
+    page-break-inside: auto
+}
+
+tr {
+    page-break-inside: avoid;
+    page-break-after: auto
+}
+
+thead {
+    display: table-header-group
+}
+
+tfoot {
+    display: table-footer-group
+}
+
+

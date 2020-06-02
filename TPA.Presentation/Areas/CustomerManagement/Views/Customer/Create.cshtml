@@ -1,0 +1,303 @@
+﻿@model TPA.Common.Core.Model.Customer
+@using TPA.Common.Core.Resources
+
+@{
+    ViewBag.Title = Common.AddCustomer;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .txt-right {
+        text-align: right;
+    }
+
+    .Pad2 .col-sm-4 {
+        padding: 2px;
+    }
+</style>
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            @Common.AddCustomer
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="/"><i class="fa fa-dashboard"></i> @Common.Home</a></li>
+            <li><a href="#">@Common.Customer</a></li>
+            <li class="active">@Common.NewCustomer</li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">@Common.CustomerInformation</h3>
+                    </div>
+                    @using (Html.BeginForm("Create", "Customer", FormMethod.Post, new { id = "frmSave", @class = "form-horizontal" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(x => x.CustomerId);
+                        <div class="box-body Pad2">
+                            <div class="col-lg-12">
+                                <label for="inputEmail3" class="col-sm-2 control-label required">@Common.CustomerClass</label>
+                                <div class="col-sm-4">
+                                    @Html.DropDownListFor(x => x.CustomerClassId, Dropdowns.GetDropdown(DropdownTypes.CustomerState, Model.CustomerClassId), Common.SelectDropdownValue, new { @class = "form-control" })
+                                </div>
+
+                                <label for="inputPassword3" class="col-sm-2  control-label required">@Common.CustomerType</label>
+                                <div class="col-sm-4">
+                                    @Html.DropDownListFor(x => x.CustomerTypeId, Dropdowns.GetDropdown(DropdownTypes.CustomerTypes, Model.CustomerTypeId), Common.SelectDropdownValue, new { @class = "form-control" })
+                                </div>
+
+                                <label for="inputPassword3" class="col-sm-2  control-label required">@Common.Currency</label>
+                                <div class="col-sm-4">
+                                    @Html.DropDownListFor(x => x.CurrencyId, Dropdowns.GetDropdown(DropdownTypes.Currency, Model.CurrencyId), Common.SelectDropdownValue, new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="box-header with-border">
+                            <h3 class="box-title">@Common.GeneralInformation</h3>
+                        </div>
+
+                        <div class="box-body Pad2">
+                            <div class="col-lg-12">
+                                <label for="inputEmail31" class="col-sm-2 control-label required">@Common.CustomerNameArabic</label>
+                                <div class="col-sm-4">
+                                    @Html.TextBoxFor(x => x.CustomerNameA, new { @class = "form-control txt-right", onkeypress = "arabicCharacters(event, this)", MaxLength = "150" })
+                                </div>
+
+                                <label for="inputEmail31" class="col-sm-2 control-label required">@Common.CustomerNameEnglish</label>
+                                <div class="col-sm-4">
+                                    @Html.TextBoxFor(x => x.CustomerNameE, new { @class = "form-control", MaxLength = "150" })
+                                </div>
+
+                                <label for="inputEmail3" class="col-sm-2 control-label required">@Common.Country</label>
+                                <div class="col-sm-4">
+                                    @Html.DropDownListFor(x => x.CountryId, Dropdowns.GetDropdown(DropdownTypes.Country, Model.CountryId), Common.SelectDropdownValue, new { @class = "form-control ddlCountry" })
+                                </div>
+
+                                <label for="inputEmail3" class="col-sm-2 control-label required">@Common.City</label>
+                                <div class="col-sm-4">
+                                    @Html.DropDownListFor(x => x.CityId, Dropdowns.GetDropdown(DropdownTypes.City, Model.CityId, Model.CountryId), Common.SelectDropdownValue, new { @class = "form-control ddlCity" })
+                                </div>
+
+                                <label for="inputEmail3" class="col-sm-2 control-label required">@Common.Nationality</label>
+                                <div class="col-sm-4">
+                                    @Html.DropDownListFor(x => x.NationalityId, Dropdowns.GetDropdown(DropdownTypes.Nationality, Model.NationalityId), Common.SelectDropdownValue, new { @class = "form-control" })
+                                </div>
+
+                                <label for="inputEmail31" class="col-sm-2 control-label required">@Common.DateOfBirth</label>
+                                <div class="col-sm-4">
+                                    <div class="input-group date">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        @Html.TextBoxFor(x => x.BirthDate, new { @class = "form-control pull-right DatePickerControl" })
+                                    </div>
+                                </div>
+
+                                <label for="inputEmail31" class="col-sm-2 control-label required">@Common.Email</label>
+                                <div class="col-sm-4">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">@@</span>
+                                        @Html.TextBoxFor(x => x.Email, new { @class = "form-control" })
+                                    </div>
+                                </div>
+
+                                <label for="inputEmail31" class="col-sm-2 control-label required">@Common.PhoneNumber</label>
+                                <div class="col-sm-4">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-phone"></i>
+                                        </div>
+                                        @Html.TextBoxFor(x => x.Phone, new { @class = "form-control phoneFormat" })
+                                    </div>
+                                </div>
+
+                                <label for="inputEmail31" class="col-sm-2 control-label">@Common.AnotherPhone</label>
+                                <div class="col-sm-4">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-phone"></i>
+                                        </div>
+                                        @Html.TextBoxFor(x => x.AnotherPhone, new { @class = "form-control numbersOnly", MaxLength = "20" })
+                                    </div>
+                                </div>
+
+                                <label for="inputEmail3" class="col-sm-2 control-label">@Common.Gender </label>
+                                <div class="col-sm-4 form-group">
+                                    &nbsp;&nbsp;
+                                    @Html.RadioButtonFor(model => model.IsMale, "false", new { @class = "minimal", @checked = true }) @Common.Male
+                                    @Html.RadioButtonFor(model => model.IsMale, "true", new { @class = "minimal" }) @Common.Female
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box-header with-border">
+                            <h3 class="box-title">@Common.Document</h3>
+                        </div>
+
+                        <div class="box-body Pad2">
+                            <div class="col-lg-12">
+                                <label for="inputEmail3" class="col-sm-2 control-label">@Common.DocumentType</label>
+                                <div class="col-sm-4">
+                                    @Html.DropDownListFor(x => x.CustomerDocument.DocumentTypeId, Dropdowns.GetDropdown(DropdownTypes.DocumentTypes, Model.CustomerDocument.DocumentTypeId), Common.SelectDropdownValue, new { @class = "form-control" })
+                                </div>
+
+                                <label for="inputEmail31" class="col-sm-2 control-label">@Common.DocumentNumber</label>
+                                <div class="col-sm-4">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-list-ol"></i></span>
+                                        @Html.TextBoxFor(x => x.CustomerDocument.DocumentNumber, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <label for="inputEmail31" class="col-sm-2 control-label">@Common.DocumentIssueBy</label>
+                                <div class="col-sm-4">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-university"></i></span>
+                                        @Html.TextBoxFor(x => x.CustomerDocument.DocumentIssueBy, new { @class = "form-control", MaxLength = "50" })
+                                    </div>
+                                </div>
+
+                                <label for="inputEmail31" class="col-sm-2 control-label">@Common.DocumentIssueDate</label>
+                                <div class="col-sm-4">
+                                    <div class="input-group date">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        @Html.TextBoxFor(x => x.CustomerDocument.DocumentIssueDate, new { @class = "form-control pull-right DatePickerControl" })
+                                    </div>
+                                </div>
+
+                                <label for="inputEmail31" class="col-sm-2 control-label">@Common.DocumentExpiryDate</label>
+                                <div class="col-sm-4">
+                                    <div class="input-group date">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        @Html.TextBoxFor(x => x.CustomerDocument.DocumentExpiryDate, new { @class = "form-control pull-right DatePickerControl" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box-header with-border">
+                            <h3 class="box-title">@Common.Address</h3>
+                        </div>
+
+                        <div class="box-body Pad2">
+                            <div class="col-lg-12">
+                                <label for="inputEmail31" class="col-sm-2 control-label required">@Common.State</label>
+                                <div class="col-sm-4">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-road"></i></span>
+                                        @Html.TextBoxFor(x => x.State, new { @class = "form-control", MaxLength = "50" })
+                                    </div>
+                                </div>
+                                <label for="inputEmail31" class="col-sm-2 control-label required">@Common.Suburb</label>
+                                <div class="col-sm-4">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-globe"></i></span>
+                                        @Html.TextBoxFor(x => x.Suburb, new { @class = "form-control", MaxLength = "50" })
+                                    </div>
+                                </div>
+
+                                <label for="inputEmail31" class="col-sm-2 control-label required">@Common.Street</label>
+                                <div class="col-sm-4">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa  fa-street-view"></i></span>
+                                        @Html.TextBoxFor(x => x.Street, new { @class = "form-control", MaxLength = "50" })
+                                    </div>
+                                </div>
+
+                                <label for="inputEmail31" class="col-sm-2 control-label required">@Common.PostCode</label>
+                                <div class="col-sm-4">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                                        @Html.TextBoxFor(x => x.PostCode, new { @class = "form-control", MaxLength = "50" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box-footer">
+                            <button type="button" class="btn btn-default">@Common.Cancel</button>
+                            <button type="submit" id="btnSave" class="btn btn-info pull-right">@Common.Save</button>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+        <!-- /.row -->
+       
+    </section>
+    <!-- /.content -->
+</div>
+
+@section scripts {
+
+    <script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $(".ddlCountry").change(function () {
+            $(".ddlCity").empty();
+            if ($(".ddlCountry").val() != "") {
+                $.ajax({
+                    type: 'GET',
+                    url: '@Url.Action("GetCitiesByCountry","Common", new { Area = "" })',
+                    dataType: 'json',
+                    data: { id: $(".ddlCountry").val() },
+                    success: function (data) {
+                        $.each(data, function (i, row) {
+                            $(".ddlCity").append('<option value="' + row.Value + '">' +
+                                row.Text + '</option>');
+                        });
+                    },
+                    error: function (ex) {
+                        alert('Failed to retrieve states.' + ex);
+                    }
+                });
+            }
+            return false;
+        })
+
+        $('#frmSave').submit(function (e) {
+
+            e.preventDefault();
+            $(window).scrollTop(0);
+                OpenProgressModel();
+                var $this = $(this);
+                var frmValues = $this.serialize();
+                $.ajax({
+                    type: $this.attr('method'),
+                    url: $this.attr('action'),
+                    data: frmValues,
+                    success: function (data) {
+                        CloseProgressModel();
+                        if (data.IsSuccess) {
+                            ShowMessage("@Common.SuccessfullySaved", AlertType.Success);
+                            window.setTimeout(function () {
+                                window.location.href = data.URL;
+                            }, 700);
+                        }
+                        else {
+                            ShowMessage(data.ErrorMessage, AlertType.Error);
+                        }
+                    }
+                })
+                .done(function () {
+                    console.log("Success");
+                })
+                .fail(function () {
+                    CloseProgressModel();
+                    ShowMessage("@Common.ErrorOccurred", AlertType.Error);
+                });
+            });
+    });
+
+    </script>
+}

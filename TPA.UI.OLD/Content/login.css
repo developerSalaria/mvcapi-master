@@ -1,0 +1,11 @@
+﻿.login-container {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #efefef;
+}
+
+    .login-container .kt-login {
+        width: 450px;
+    }

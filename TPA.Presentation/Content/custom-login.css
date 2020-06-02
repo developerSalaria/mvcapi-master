@@ -1,0 +1,14 @@
+﻿.kt-login__container {
+    background: #fff;
+    padding: 30px;
+    width: 500px;
+    box-shadow: 5px 5px 15px 5px rgba(0,0,0,0.35);
+}
+
+.kt-login.kt-login--v3 .kt-login__wrapper .kt-login__container {
+    width: 500px;
+}
+
+.kt-login__page {
+    background: #efefef;
+}

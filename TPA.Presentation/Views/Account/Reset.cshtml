@@ -1,0 +1,168 @@
+﻿@using TPA.Presentation
+@model TPA.Common.Core.Model.ResetModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>TPA | Log in</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Asap+Condensed:500">
+    <link href="~/Content/ladda-themeless.min.css" rel="stylesheet" />
+    <link href="~/Content/prism.css" rel="stylesheet" />
+    @Styles.Render("~/Content/login")
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/common")
+
+</head>
+<body class="kt-login__page kt-page--loading-enabled kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-header--fixed kt-header--minimize-topbar kt-header-mobile--fixed kt-subheader--enabled kt-subheader--transparent" data-gr-c-s-loaded="true">
+
+    <!-- begin::Page loader -->
+    <!-- end::Page Loader -->
+    <!-- begin:: Page -->
+    <div class="kt-grid kt-grid--ver kt-grid--root kt-page">
+        <div class="kt-grid kt-grid--hor kt-grid--root  kt-login kt-login--v3 kt-login--signin" id="kt_login">
+            <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" style="background-image: url(/metronic/themes/metronic/theme/default/demo2/dist/assets/media/bg/bg-3.jpg);">
+                <div class="kt-grid__item kt-grid__item--fluid kt-login__wrapper">
+                    <div class="kt-login__container">
+                        @*<div class="kt-login__logo">
+                                <a href="#">
+                                    <img src="/metronic/themes/metronic/theme/default/demo2/dist/assets/media/logos/logo-5.png">
+                                </a>
+                            </div>*@
+
+                        <div class="kt-login__reset">
+                            <div class="kt-login__head">
+                                <h3 class="kt-login__title">Reset password</h3>
+                                <div class="kt-login__desc">Enter your details to reset password:</div>
+                            </div>
+
+                            @using (Html.BeginForm("Reset", "Account", FormMethod.Post, new { @class = "kt-form", id = "frmReset" }))
+                            {
+                                <input type="hidden" name="Token" value="@Model.Token" />
+                                <input type="hidden" name="Email" value="@Model.Email" />
+                                <div class="form-group">
+
+                                    @Html.PasswordFor(model => model.Password, new { @class = "form-control", @placeholder = "Password" })
+                                    @Html.ValidationMessageFor(model => model.Password)
+                                </div>
+                                <div class="form-group">
+
+                                    @Html.PasswordFor(model => model.ConfirmPassword, new { @class = "form-control", @placeholder = "Confirm Password" })
+                                    @Html.ValidationMessageFor(model => model.ConfirmPassword)
+                                </div>
+
+                                <div class="kt-login__actions">
+                                    <button id="kt_reset_submit" class="btn btn-brand btn-elevate kt-login__btn-primary ladda-button" data-style="zoom-in" data-size="l"><span class="ladda-label">Reset</span><span class="ladda-spinner"></span></button>&nbsp;&nbsp;
+                                    <button id="kt_reset_cancel" type="button" class="btn btn-light btn-elevate kt-login__btn-secondary">Cancel</button>
+                                </div>
+                            }
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end:: Page -->
+    <!-- begin::Global Config(global config for global JS sciprts) -->
+    <script>
+        var KTAppOptions = { "colors": { "state": { "brand": "#374afb", "light": "#ffffff", "dark": "#282a3c", "primary": "#5867dd", "success": "#34bfa3", "info": "#36a3f7", "warning": "#ffb822", "danger": "#fd3995" }, "base": { "label": ["#c5cbe3", "#a1a8c3", "#3d4465", "#3e4466"], "shape": ["#f0f3ff", "#d9dffa", "#afb4d4", "#646c9a"] } } };
+    </script>
+    <!-- end::Global Config -->
+    <!--begin::Global Theme Bundle(used by all pages) -->
+    <!--end::Global Theme Bundle -->
+    <!--begin::Page Scripts(used by this page) -->
+    @Scripts.Render("~/bundles/jquery")
+    <script src="~/Scripts/spin.min.js"></script>
+    <script src="~/Scripts/ladda.min.js"></script>
+    @Scripts.Render("~/bundles/bootstrap")
+
+    @Scripts.Render("~/bundles/login")
+
+    @Scripts.Render("~/Scripts/jquery.validate.min.js")
+    @Scripts.Render("~/Scripts/jquery.validate.unobtrusive.min.js")
+    <!--end::Page Scripts -->
+    <!-- end::Body -->
+
+<script type="text/javascript">
+
+        var ladda;
+        $(document).ready(function () {
+            $('#frmReset').submit(function (e) {
+                debugger
+                // startLaddaSpinWheel("kt_login_signup_submit");
+                e.preventDefault();
+                if ($(this).valid()) {
+                    ladda.start();
+                    var $this = $(this);
+                    var frmValues = $this.serialize();
+                    $.ajax({
+                        type: $this.attr('method'),
+                        url: $this.attr('action'),
+                        data: frmValues,
+                        success: function (data) {
+                            debugger;
+                            if (data.IsSuccess) {
+                                ShowMessage("Password reset successfully.", AlertType.Success);
+                                setInterval(function ()
+                                {
+                                     window.location.href = "@Url.Action("Login","Account")";
+                                }, 3000);
+
+                            }
+                            else {
+                                ShowMessage(data.ErrorMessage[0], AlertType.Error);
+                            }
+
+                            ladda.stop();
+
+
+                        }
+                    })
+                        .done(function () {
+                            console.log("Success");
+                            ladda.stop();
+                        })
+                        .fail(function () {
+                            //CloseProgressModel();
+                            ladda.stop();
+                        });
+                }
+            });
+
+            $("#kt_reset_submit").click(function () {
+                CreateLadda(this);
+            });
+
+            $("#kt_reset_cancel").click(function () {
+             window.location.href = "@Url.Action("Login","Account")";
+            });
+
+
+
+            function CreateLadda(item) {
+                ladda = Ladda.create(item);
+            }
+
+
+        });
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>

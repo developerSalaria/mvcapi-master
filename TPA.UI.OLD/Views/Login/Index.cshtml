@@ -1,0 +1,95 @@
+﻿
+@{
+    Layout = "_LoginLayoutPage.cshtml";
+}
+<div class="kt-login kt-login--v5">
+    <div class="kt-login__right">
+        <div class="kt-login__wrapper">
+            <div class="kt-login__signin">
+                <div class="kt-login__head">
+                    <h3 class="kt-login__title">Login To Your Account</h3>
+                </div>
+                <div class="kt-login__form">
+                    <form class="kt-form" action="@Url.Action("UserLogin", "Login")" method="post">
+                        <div class="form-group">
+                            <input class="form-control" type="text" placeholder="Username" name="UserId" autocomplete="off">
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control form-control-last" type="Password" placeholder="Password" name="password">
+                        </div>
+                        <div class="row kt-login__extra">
+                            <div class="col kt-align-left">
+                                <label class="kt-checkbox">
+                                    <input type="checkbox" name="remember"> Remember me
+                                    <span></span>
+                                </label>
+                            </div>
+                            <div class="col kt-align-right">
+                                <a href="javascript:;" id="kt_login_forgot" class="kt-link">Forget Password ?</a>
+                            </div>
+                        </div>
+                        <div class="kt-login__actions">
+                            <button id="kt_login_signin_submit" class="btn btn-brand btn-pill btn-elevate">Sign In</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#kt_login_signin_submit').click(function (e) {
+            e.preventDefault();
+            var btn = $(this);
+            var form = $('.kt-form');
+
+            form.validate({
+                rules: {
+                    UserId: {
+                        required: true
+                    },
+                    password: {
+                        required: true
+                    }
+                },
+
+                messages: {
+                    UserId: {
+                        required: "User name is required."
+                    },
+                    password: {
+                        required: "Password is required."
+                    },
+
+                }
+            });
+
+            if (!form.valid()) {
+                return;
+            }
+
+            form.ajaxSubmit({
+                url: $('.kt-form').attr('action'),
+                success: function (response, status, xhr, $form) {
+
+                    if (response.success === true) {
+                        window.location = response.resposneTxt;
+                    } else {
+                        console.log("test");
+                        showErrorMsg(form, 'danger', response.message);
+                    }
+                },
+                error: function (response, status, xhr, $form) {
+                    debugger;
+                    console.log("cxc");
+                    //similate 2s delay
+                    setTimeout(function () {
+                        btn.removeClass('kt-loader kt-loader--right kt-loader--light').attr('disabled', false);
+                        showErrorMsg(form, response);
+                    }, 2000);
+                }
+            });
+        });
+    })
+</script>

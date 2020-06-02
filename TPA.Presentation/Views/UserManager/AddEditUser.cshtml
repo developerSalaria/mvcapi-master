@@ -1,0 +1,157 @@
+﻿@using Newtonsoft.Json;
+@using TPA.Common.Core.Model;
+@model UserViewModel
+@{
+    ViewBag.Title = "User Manage";
+    Layout = null;
+}
+
+<style>
+    .select2-container--default .select2-selection--multiple .select2-selection__rendered .select2-selection__choice .select2-selection__choice__remove {
+        color: var(--light) !important;
+    }
+
+    .select2-container--default .select2-selection--multiple .select2-selection__rendered .select2-selection__choice {
+        color: var(--light) !important;
+        background: var(--info) !important;
+        border: 1px solid #ebedf2 !important;
+    }
+    .error{
+        color: red !important;
+    }
+</style>
+<div class="kt-portlet kt-portlet--mobile pea-page">
+    <div class="kt-portlet__head" style="        background: #F35869 !important;
+        min-height: 42px;
+        border-radius: 4px;">
+        <div class="kt-portlet__head-label">
+            <span class="kt-portlet__head-icon">
+                <i class="fas fa-user text-white"></i>
+            </span>
+            <h3 class="kt-portlet__head-title text-white">
+                @ViewBag.headerTitle
+            </h3>
+        </div>
+    </div>
+    <div class="kt-portlet__body">
+        <form id="addNewUser">
+        @Html.HiddenFor(m => m.Id, new { @class = "form-control kt-input", id = "txtUserId" })
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row kt-margin-b-20">
+                    <div class="col-lg-6 kt-margin-b-10">
+                        <label style="font-weight:700">User Name :</label>
+                            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control kt-input", id = "txtUserName", required = "required" })
+                    </div>
+
+                    <div class="col-lg-6 kt-margin-b-10">
+                        <label style="font-weight:700">Email :</label>
+                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control kt-input", id = "txtEmail" ,@type ="email", required = "required" })
+                    </div>
+                    @if (Model.Id == null)
+                    {
+                        <div class="col-lg-6 kt-margin-b-10">
+                            <label style="font-weight:700">Password :</label>
+                                @Html.TextBoxFor(m => m.Password, new { @type = "password", @class = "form-control kt-input", id = "txtPassword" , required = "required" })
+                        </div>
+
+                        <div class="col-lg-6 kt-margin-b-10">
+                            <label style="font-weight:700">Confirm Password :</label>
+                                @Html.TextBoxFor(m => m.ConfirmPassword, new { @type = "password", @class = "form-control kt-input", id = "txtConfirmPassword" , required = "required"  })
+                        </div>
+                    }
+                    <div class="col-lg-6 kt-margin-b-10">
+                        <label style="font-weight:700">Select Role :</label>
+                        @Html.ListBoxFor(x => x.SelectedRole, new SelectList(Model.RoleList, "Text", "Text"), new { @class = "form-control dropDownSelect2", style = "width: 100 %" , required = "required" })
+                    </div>
+                    <div class="col-lg-6 kt-margin-b-10">
+                    </div>
+
+
+                    <div class="col-m-3 kt-margin-t-20">
+                        <button button="submit" class="text-white btn  btn-primary ml-3" onclick="saveUser()" id="btnSaveUser"><i class="fas fa-save"></i>Save</button>
+                        <button class="btn text-white ml-3" data-dismiss="modal" aria-label="Close" style="background-color:red;"><i class="fas fa-window-close"></i>Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+            </form>
+    </div>
+</div>
+<script>
+    // A $( document ).ready() block.
+$( document ).ready(function() {
+
+});
+    //#region User Management
+    //Save user in add edit case
+    function saveUser() {
+            $.ajax({
+                type: 'Post',
+                url: '@Url.Action("AddEditUser", "UserManager")',
+                data: userViewModel = {
+                    id: $("#txtUserId").val(),
+                    userName: $("#txtUserName").val(),
+                    email: $("#txtEmail").val(),
+                    password: $("#txtPassword").val(),
+                    selectedRole: $("#SelectedRole").val(),
+                    confirmPassword: $("#txtConfirmPassword").val()
+                },
+                success: function (data) {
+                    clearAddEditUserFields();
+                    swal.fire({
+                        title: "Saved Successfully!",
+                        type: "success"
+                    }).then(function () {
+                        clearAddEditUserFields();
+                        window.location.href = '/UserManager/List'
+                    });
+                }
+            })
+    }
+
+    //Clear use Add edit fields
+    function clearAddEditUserFields() {
+        debugger
+                        $("#txtUserId").val("");
+                        $("#txtUserName").val("");
+                        $("#txtEmail").val("");
+                        $("#ddlSelectedRoles").val("");
+                        $("#txtPassword").val("");
+                        $("#txtConfirmPassword").val("");
+    }
+
+      function InitCustomDropdown() {
+                //used for custom matcher for searching
+                var configParamsObj = {
+                    background: '#f00',
+                    minimumResultsForSearch: 3, // Overrides default of 15 set above
+                    matcher: function (params, data) {
+                        // If there are no search terms, return all of the data
+                        if ($.trim(params.term) === '') {
+                            return data;
+                        }
+                        // `params.term` should be the term that is used for searching
+                        // `data.text` is the text that is displayed for the data object
+                        if (data.text.toLowerCase().startsWith(params.term.toLowerCase())) {
+                            var modifiedData = $.extend({}, data, true);
+                            ///modifiedData.text += ' (matched)';
+
+                            // You can return modified objects from here
+                            // This includes matching the `children` how you want in nested data sets
+                            return modifiedData;
+                        }
+
+                        // Return `null` if the term should not be displayed
+                        return null;
+                    }
+                };
+                $("select.dropDownSelect2").select2(configParamsObj);
+            }
+    //#endregion
+</script>
+
+
+
+
+

@@ -1,0 +1,139 @@
+﻿@using TPA.Common.Core.Resources
+
+<aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+        <!-- Sidebar user panel -->
+        <div class="user-panel">
+            <div class="pull-left image">
+                <img src="~/Images/profilePhoto.jpg" class="img-circle" alt="User Image" style="height: 44px;">
+            </div>
+            <div class="pull-left info">
+                <p>@Common.LoginUserName</p>
+                <a href="#"><i class="fa fa-circle text-success"></i>@Common.Online</a>
+            </div>
+        </div>
+        <!-- search form -->
+        <form action="#" method="get" class="sidebar-form">
+            <div class="input-group">
+                <input type="text" name="q" class="form-control" placeholder="Search...">
+                <span class="input-group-btn">
+                    <button type="submit" name="search" id="search-btn" class="btn btn-flat">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </span>
+            </div>
+        </form>
+        <!-- /.search form -->
+        <!-- sidebar menu: : style can be found in sidebar.less -->
+        <ul class="sidebar-menu">
+            @*<li class="header">MAIN NAVIGATION</li>*@
+            <li class="active"><a href="/"><i class="fa  fa-tachometer"></i> <span>@Common.Dashboard</span></a></li>
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-users"></i>
+                    <span>@Common.CustomerManagement</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="/CustomerManagement/Customer/Create"><i class="fa fa-circle-o  text-green"></i> @Common.AddCustomer</a></li>
+                    <li><a href="/CustomerManagement/Customer/AllCustomers"><i class="fa fa-circle-o text-green"></i> @Common.CustomersList</a></li>
+                    <li><a href="/CustomerManagement/Customer/CustomerDetail"><i class="fa fa-circle-o text-yellow"></i> @Common.CustomerAccounts</a></li>
+                </ul>
+            </li>
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-book"></i>
+                    <span>@Common.AccountManagement</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="pages/UI/general.html"><i class="fa fa-circle-o text-red"></i> @Common.AddAccount </a></li>
+                    <li><a href="pages/UI/icons.html"><i class="fa fa-circle-o text-red"></i> @Common.AccountsList</a></li>
+                    <li><a href="pages/UI/buttons.html"><i class="fa fa-circle-o text-red"></i> @Common.AccountGroup</a></li>
+                    <li><a href="pages/UI/sliders.html"><i class="fa fa-circle-o text-red"></i> @Common.AccountLedger</a></li>
+                    <li><a href="pages/UI/timeline.html"><i class="fa fa-circle-o text-red"></i> @Common.MultipleAccountLedger</a></li>
+                    <li><a href="pages/UI/modals.html"><i class="fa fa-circle-o text-red"></i> @Common.AccountTree</a></li>
+                </ul>
+            </li>
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-edit"></i> <span>@Common.FinancialStatement</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="pages/forms/general.html"><i class="fa fa-circle-o text-red"></i> @Common.DoubleEntryEquation</a></li>
+                    <li><a href="pages/forms/advanced.html"><i class="fa fa-circle-o text-red"></i> @Common.GeneralLedgerBS</a></li>
+                    <li><a href="pages/forms/editors.html"><i class="fa fa-circle-o text-red"></i> @Common.ProfitLossAccount</a></li>
+                    <li><a href="pages/forms/editors.html"><i class="fa fa-circle-o text-red"></i> @Common.TrialBalance</a></li>
+                    <li><a href="pages/forms/editors.html"><i class="fa fa-circle-o text-red"></i> @Common.FundFlow</a></li>
+                    <li><a href="pages/forms/editors.html"><i class="fa fa-circle-o text-red"></i> @Common.ChartOfAccount</a></li>
+                    <li><a href="pages/forms/editors.html"><i class="fa fa-circle-o text-red"></i> @Common.FinancialOpen</a></li>
+                    <li><a href="pages/forms/editors.html"><i class="fa fa-circle-o text-red"></i> @Common.CloseAccountingRecords</a></li>
+                    <li><a href="pages/forms/editors.html"><i class="fa fa-circle-o text-red"></i> @Common.FinancialClose</a></li>
+                    <li><a href="pages/forms/editors.html"><i class="fa fa-circle-o text-red"></i> @Common.TheBalanceEnterpriseLevel</a></li>
+                </ul>
+            </li>
+
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-book"></i> <span>@Common.Reports</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="pages/tables/simple.html"><i class="fa fa-circle-o text-red"></i> @Common.JournalReport</a></li>
+                    <li><a href="pages/tables/data.html"><i class="fa fa-circle-o text-red"></i> @Common.PaymentReport</a></li>
+                    <li><a href="pages/tables/data.html"><i class="fa fa-circle-o text-red"></i> @Common.AccountLedgerReport</a></li>
+                    <li><a href="pages/tables/data.html"><i class="fa fa-circle-o text-red"></i> @Common.OutstandingReport</a></li>
+                </ul>
+            </li>
+
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-table"></i> <span>@Common.MasterTables</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="pages/tables/simple.html"><i class="fa fa-circle-o text-red"></i> @Common.FinancialYear</a></li>
+                    <li><a href="pages/tables/data.html"><i class="fa fa-circle-o text-red"></i> @Common.Currency</a></li>
+                    <li><a href="pages/tables/data.html"><i class="fa fa-circle-o text-red"></i> @Common.ExchangeRate</a></li>
+                    <li><a href="pages/tables/data.html"><i class="fa fa-circle-o text-red"></i> @Common.Services</a></li>
+                    <li><a href="pages/tables/data.html"><i class="fa fa-circle-o text-red"></i> @Common.ShippingType</a></li>
+                    <li><a href="pages/tables/data.html"><i class="fa fa-circle-o text-red"></i> @Common.TheNotes</a></li>
+                    <li><a href="pages/tables/data.html"><i class="fa fa-circle-o text-red"></i> @Common.Area</a></li>
+                    <li><a href="pages/tables/data.html"><i class="fa fa-circle-o text-red"></i> @Common.Route</a></li>
+                    <li><a href="pages/tables/data.html"><i class="fa fa-circle-o text-red"></i> @Common.UnitLength</a></li>
+                    <li><a href="pages/tables/data.html"><i class="fa fa-circle-o text-red"></i> @Common.WeightUnit</a></li>
+                    <li><a href="pages/tables/data.html"><i class="fa fa-circle-o text-red"></i> @Common.Content</a></li>
+                </ul>
+            </li>
+
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-user"></i> <span>@Common.UserManagement</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="pages/tables/simple.html"><i class="fa fa-circle-o text-red"></i> @Common.CreateUser</a></li>
+                    <li><a href="pages/tables/data.html"><i class="fa fa-circle-o text-red"></i> @Common.UsersList</a></li>
+                    <li><a href="pages/tables/data.html"><i class="fa fa-circle-o text-red"></i> @Common.ChangePassword</a></li>
+                    <li><a href="pages/tables/data.html"><i class="fa fa-circle-o text-red"></i> @Common.RoleManagement</a></li>
+                    <li><a href="pages/tables/data.html"><i class="fa fa-circle-o text-red"></i> @Common.RolePrivilegeSetting</a></li>
+                </ul>
+            </li>
+        </ul>
+    </section>
+    <!-- /.sidebar -->
+</aside>

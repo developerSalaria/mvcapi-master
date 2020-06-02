@@ -1,0 +1,137 @@
+﻿@using Newtonsoft.Json;
+@using TPA.Common.Core.Model;
+@model UserViewModel
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewBag.Title = "UserManager";
+    Layout = null;
+}
+
+<div class="kt-portlet kt-portlet--mobile pea-page">
+    <div class="kt-portlet__head" style="background: #F35869 !important;min-height:42px;border-radius:4px;">
+        <div class="kt-portlet__head-label">
+            <span class="kt-portlet__head-icon">
+                <i class="fas fa-user text-white"></i>
+            </span>
+            <h3 class="kt-portlet__head-title text-white">
+                @*@ViewBag.headerTitle*@
+                Add New User
+            </h3>
+        </div>
+    </div>
+    <div class="kt-portlet__body">
+        @Html.HiddenFor(m => m.Id, new { @class = "form-control kt-input", id = "txtUserId" })
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row kt-margin-b-20">
+                    <div class="col-lg-6 kt-margin-b-10">
+                        <label style="font-weight:700">User Name :</label>
+                        <div class="input-group">
+                            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control kt-input", id = "txtUserName" })
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-user text-dark"></i></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6 kt-margin-b-10">
+                        <label style="font-weight:700">Email :</label>
+                        <div class="input-group">
+                            @Html.TextBoxFor(m => m.Email, new { @type = "email", @class = "form-control kt-input", id = "txtEmail" })
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-envelope-square text-dark"></i></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6 kt-margin-b-10">
+                        <label style="font-weight:700">Password :</label>
+                        <div class="input-group">
+                            @Html.TextBoxFor(m => m.Password, new { @type = "password", @class = "form-control kt-input", id = "txtPassword" })
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-key text-dark"></i></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6 kt-margin-b-10">
+                        <label style="font-weight:700">Confirm Password :</label>
+                        <div class="input-group">
+                            @Html.TextBoxFor(m => m.ConfirmPassword, new { @type = "password", @class = "form-control kt-input", id = "txtConfirmPassword" })
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-key text-dark"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-m-3 kt-margin-t-20">
+                        @*@if (Model.Id == 0)
+                            {*@
+                        <button class="text-white btn  btn-primary ml-3" id="btnSaveUser"><i class="fas fa-save"></i>Save</button>
+
+                        <button class="btn text-white ml-3" data-dismiss="modal" aria-label="Close" style="background-color:red;"><i class="fas fa-window-close"></i>Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        InitCustomDropdown();
+    });
+    function InitCustomDropdown() {
+        //used for custom matcher for searching
+        var configParamsObj = {
+            background: '#f00',
+            minimumResultsForSearch: 3, // Overrides default of 15 set above
+            matcher: function (params, data) {
+                // If there are no search terms, return all of the data
+                if ($.trim(params.term) === '') {
+                    return data;
+                }
+                // `params.term` should be the term that is used for searching
+                // `data.text` is the text that is displayed for the data object
+                if (data.text.toLowerCase().startsWith(params.term.toLowerCase())) {
+                    var modifiedData = $.extend({}, data, true);
+                    ///modifiedData.text += ' (matched)';
+
+                    // You can return modified objects from here
+                    // This includes matching the `children` how you want in nested data sets
+                    return modifiedData;
+                }
+
+                // Return `null` if the term should not be displayed
+                return null;
+            }
+        };
+        $("select.dropDownSelect2").select2(configParamsObj);
+    }
+
+     $("#btnSaveUser").on("click", function () {
+                $.ajax({
+                    type: 'Post',
+                    url: '@Url.Action("AddUser", "UserManager")',
+                    data: provider = {
+                            id : $("#txtUserId").val(),
+                        userName: $("#txtUserName").val(),
+                            email: $("#txtEmail").val(),
+                            password : $("#txtPassword").val(),
+                            confirmPassword : $("#txtConfirmPassword").val(),
+                           // roleList : $("#ddlSelectedRole").val(),
+    },
+                    success: function (data) {
+                        debugger
+                        //clearAddEditUserFields();
+                       swal.fire("User Added Successfully!");
+                    }
+                })
+            });
+</script>
+
+
+
+
+
+
+
+
